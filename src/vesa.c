@@ -167,9 +167,9 @@ static const char *fbSymbols[] = {
 static const char *shadowSymbols[] = {
     "shadowAlloc",
     "shadowInit",
-    "shadowUpdatePacked",
-    "shadowUpdatePlanar4",
-    "shadowUpdatePlanar4x8",
+    "shadowUpdatePackedWeak",
+    "shadowUpdatePlanar4Weak",
+    "shadowUpdatePlanar4x8Weak",
     NULL
 };
 
