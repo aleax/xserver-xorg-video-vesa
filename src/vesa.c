@@ -28,7 +28,7 @@
  * Authors: Paulo César Pereira de Andrade <pcpa@conectiva.com.br>
  *          David Dawes <dawes@xfree86.org>
  *
- * $XFree86: xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.c,v 1.41 2003/11/07 22:50:57 dawes Exp $
+ * $XFree86: xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.c,v 1.40 2003/11/03 05:11:45 tsi Exp $
  */
 
 #include "vesa.h"
@@ -212,7 +212,7 @@ static XF86ModuleVersionInfo vesaVersionRec =
     MODULEVENDORSTRING,
     MODINFOSTRING1,
     MODINFOSTRING2,
-    XF86_VERSION_CURRENT,
+    XORG_VERSION_CURRENT,
     VESA_MAJOR_VERSION, VESA_MINOR_VERSION, VESA_PATCHLEVEL,
     ABI_CLASS_VIDEODRV,			/* This is a video driver */
     ABI_VIDEODRV_VERSION,
