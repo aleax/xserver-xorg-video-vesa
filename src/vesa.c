@@ -909,17 +909,17 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 
 	if (mode->MemoryModel == 3) {	/* Planar */
 	  if (pScrn->bitsPerPixel == 8)
-		update = LoaderSymbol("shadowUpdatePlanar4x8");
+		update = shadowUpdatePlanar4x8Weak();
 	    else
-		update = LoaderSymbol("shadowUpdatePlanar4");
+		update = shadowUpdatePlanar4Weak();
 	    window = VESAWindowPlanar;
 	}
 	else if (pVesa->mapPhys == 0xa0000) {	/* Windowed */
-	    update = LoaderSymbol("shadowUpdatePacked");
+	    update = shadowUpdatePackedWeak();
 	    window = VESAWindowWindowed;
 	}
 	else {	/* Linear */
-	    update = LoaderSymbol("shadowUpdatePacked");
+	    update = shadowUpdatePackedWeak();
 	    window = VESAWindowLinear;
 	}
 
