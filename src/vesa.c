@@ -45,7 +45,7 @@
 
 /* DPMS */
 #define DPMS_SERVER
-#include "extensions/dpms.h"
+#include <X11/extensions/dpms.h>
 
 /* Mandatory functions */
 static const OptionInfoRec * VESAAvailableOptions(int chipid, int busid);
