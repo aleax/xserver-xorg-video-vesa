@@ -116,6 +116,7 @@ typedef struct _VESARec
     CloseScreenProcPtr CloseScreen;
     OptionInfoPtr Options;
     IOADDRESS ioBase;
+    Bool ModeSetClearScreen;
 } VESARec, *VESAPtr;
 
 

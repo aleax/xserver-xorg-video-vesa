@@ -131,12 +131,15 @@ static IsaChipsets VESAISAchipsets[] = {
 
 typedef enum {
     OPTION_SHADOW_FB,
-    OPTION_DFLT_REFRESH
+    OPTION_DFLT_REFRESH,
+    OPTION_MODESET_CLEAR_SCREEN
 } VESAOpts;
 
 static const OptionInfoRec VESAOptions[] = {
     { OPTION_SHADOW_FB,    "ShadowFB",		OPTV_BOOLEAN,	{0},	FALSE },
     { OPTION_DFLT_REFRESH, "DefaultRefresh",	OPTV_BOOLEAN,	{0},	FALSE },
+    { OPTION_MODESET_CLEAR_SCREEN, "ModeSetClearScreen",
+						OPTV_BOOLEAN,	{0},	FALSE },
     { -1,		   NULL,		OPTV_NONE,	{0},	FALSE }
 };
 
@@ -638,6 +641,10 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     if (xf86ReturnOptValBool(pVesa->Options, OPTION_DFLT_REFRESH, FALSE))
 	pVesa->defaultRefresh = TRUE;
 
+    if (xf86ReturnOptValBool(pVesa->Options, OPTION_MODESET_CLEAR_SCREEN, 
+			     TRUE))
+	pVesa->ModeSetClearScreen = TRUE;
+
     if (!pVesa->defaultRefresh)
 	VBESetModeParameters(pScrn, pVesa->pVbe);
 
@@ -1025,7 +1032,16 @@ VESACloseScreen(int scrnIndex, ScreenPtr pScreen)
 static Bool
 VESASwitchMode(int scrnIndex, DisplayModePtr pMode, int flags)
 {
-    return VESASetMode(xf86Screens[scrnIndex], pMode);
+    ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
+    VESAPtr pVesa = VESAGetRec(pScrn);
+    Bool ret;
+
+    if (pVesa->ModeSetClearScreen) 
+	pScrn->EnableDisableFBAccess(scrnIndex,FALSE);
+    ret = VESASetMode(xf86Screens[scrnIndex], pMode);
+    if (pVesa->ModeSetClearScreen) 
+	pScrn->EnableDisableFBAccess(scrnIndex,TRUE);
+    return ret;
 }
 
 /* Set a graphics mode */
@@ -1039,8 +1055,7 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
     pVesa = VESAGetRec(pScrn);
 
     data = (VbeModeInfoData*)pMode->Private;
-
-    mode = data->mode | (1 << 15);
+    mode = data->mode | ( pVesa->ModeSetClearScreen ?  (1U << 15)  : 0);
 
     /* enable linear addressing */
     if (pVesa->mapPhys != 0xa0000)
@@ -1071,7 +1086,7 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
     if (data->data->XResolution != pScrn->displayWidth)
 	VBESetLogicalScanline(pVesa->pVbe, pScrn->displayWidth);
 
-    if (pScrn->bitsPerPixel >= 8 && pVesa->vbeInfo->Capabilities[0] & 0x01)
+    if (pScrn->bitsPerPixel == 8 && pVesa->vbeInfo->Capabilities[0] & 0x01)
 	VBESetGetDACPaletteFormat(pVesa->pVbe, 8);
 
     pScrn->vtSema = TRUE;
