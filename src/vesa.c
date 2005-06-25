@@ -97,7 +97,7 @@ static Bool VESADGAInit(ScrnInfoPtr pScrn, ScreenPtr pScreen);
  * reference to this is compiled in, and this requires that the name of
  * this DriverRec be an upper-case version of the driver name.
  */
-DriverRec VESA = {
+_X_EXPORT DriverRec VESA = {
     VESA_VERSION,
     VESA_DRIVER_NAME,
     VESAIdentify,
@@ -227,7 +227,7 @@ static XF86ModuleVersionInfo vesaVersionRec =
  * This data is accessed by the loader.  The name must be the module name
  * followed by "ModuleData".
  */
-XF86ModuleData vesaModuleData = { &vesaVersionRec, vesaSetup, NULL };
+_X_EXPORT XF86ModuleData vesaModuleData = { &vesaVersionRec, vesaSetup, NULL };
 
 static pointer
 vesaSetup(pointer Module, pointer Options, int *ErrorMajor, int *ErrorMinor)
