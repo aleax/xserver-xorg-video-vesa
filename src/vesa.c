@@ -31,6 +31,10 @@
  * $XFree86: xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.c,v 1.40 2003/11/03 05:11:45 tsi Exp $
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "vesa.h"
 
 /* All drivers initialising the SW cursor need this */
