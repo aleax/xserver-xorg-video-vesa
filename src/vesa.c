@@ -159,7 +159,9 @@ static const OptionInfoRec VESAOptions[] = {
 static const char *miscfbSymbols[] = {
     "xf1bppScreenInit",
     "xf4bppScreenInit",
+#ifdef USE_AFB
     "afbScreenInit",
+#endif
     "mfbScreenInit",
     NULL
 };
@@ -680,9 +682,14 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 			reqSym = "xf4bppScreenInit";
 			break;
 		    default:
+#ifdef USE_AFB
 			mod = "afb";
 			reqSym = "afbScreenInit";
 			break;
+#else
+			xf86DrvMsg(pScrn->scrnIndex, X_ERROR, 
+				   "Unsupported bpp: %d", pScrn->bitsPerPixel);
+#endif
 		}
 	    }
 	    break;
@@ -863,9 +870,11 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 			    return (FALSE);
 			break;
 		    default:
+#ifdef USE_AFB
 			if (!afbScreenInit(pScreen, pVesa->base,
 					   pScrn->virtualX, pScrn->virtualY,
 					   pScrn->xDpi, pScrn->yDpi, pScrn->displayWidth))
+#endif
 			    return (FALSE);
 			break;
 		}
