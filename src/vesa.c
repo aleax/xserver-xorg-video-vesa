@@ -1023,8 +1023,9 @@ VESACloseScreen(int scrnIndex, ScreenPtr pScreen)
 
     if (pScrn->vtSema) {
 	VESASaveRestore(xf86Screens[scrnIndex], MODE_RESTORE);
-	VBESetGetPaletteData(pVesa->pVbe, TRUE, 0, 256,
-			     pVesa->savedPal, FALSE, TRUE);
+	if (pVesa->savedPal)
+	    VBESetGetPaletteData(pVesa->pVbe, TRUE, 0, 256,
+				 pVesa->savedPal, FALSE, TRUE);
 	VESAUnmapVidMem(pScrn);
     }
     if (pVesa->shadowPtr) {
