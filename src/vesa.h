@@ -85,7 +85,7 @@
 #define VESA_DRIVER_NAME	"vesa"
 #define VESA_MAJOR_VERSION	1
 #define VESA_MINOR_VERSION	0
-#define VESA_PATCHLEVEL		0
+#define VESA_PATCHLEVEL		1
 
 /*XXX*/
 
