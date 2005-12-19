@@ -49,7 +49,7 @@ This option is recommended for performance reasons.
 .TP
 .BI "Option \*qModeSetClearScreen\*q \*q" boolean \*q
 Clear the screen on mode set. Some BIOSes seem to be broken in the
-sence that the newly set video mode is bogus if they are asked to 
+sense that the newly set video mode is bogus if they are asked to 
 clear the screen during mode setting. If you experience problems try
 to turn this option off. Default: on.
 
