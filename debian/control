@@ -1,0 +1,25 @@
+Source: xserver-xorg-driver-vesa
+Section: x11
+Priority: optional
+Maintainer: Daniel Stone <daniel.stone@ubuntu.com>
+Build-Depends: debhelper (>= 4.0.0), pkg-config, xserver-xorg-dev, x11proto-xext-dev, x11proto-core-dev, x11proto-fonts-dev, x11proto-randr-dev, x11proto-render-dev
+Standards-Version: 3.6.1.0
+
+Package: xserver-xorg-driver-vesa
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, xserver-xorg-core (>= 1:0.99.0-1)
+Provides: xserver-xorg-driver
+Replaces: xserver-xorg (<< 6.8.2-35)
+Description: X.Org X server -- VESA display driver
+ This driver for the X.Org X server (see xserver-xorg for a further description)
+ uses the standard VESA interface provided on all video cards, but runs
+ unaccelerated.  This driver is not recommended for use unless you have a
+ problem  with the normal driver for your card, because it will peform very
+ badly.
+ .
+ More information about X.Org can be found at:
+ <URL:http://xorg.freedesktop.org>
+ <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This module can be found as the module 'driver/xf86-video-vesa' at
+ :pserver:anoncvs@cvs.freedesktop.org:/cvs/xorg
