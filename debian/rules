@@ -2,9 +2,12 @@
 # debian/rules for the Debian xserver-xorg-driver-vesa package.
 # Copyright © 2004 Scott James Remnant <scott@netsplit.com>
 # Copyright © 2005 Daniel Stone <daniel@fooishbar.org>
+# Copyright © 2005 David Nusinow <dnusinow@debian.org>
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
+
+include debian/xsfbs/xsfbs.mk
 
 CFLAGS = -Wall -g
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
