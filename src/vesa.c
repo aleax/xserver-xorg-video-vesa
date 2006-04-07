@@ -35,6 +35,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "vesa.h"
 
 /* All drivers initialising the SW cursor need this */
