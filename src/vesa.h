@@ -109,7 +109,6 @@ typedef struct _VESARec
     CARD8 *fonts;
     xf86MonPtr monitor;
     Bool shadowFB, primary;
-    CARD8 *shadowPtr;
     CARD32 windowAoffset;
     /* Don't override the default refresh rate. */
     Bool defaultRefresh;

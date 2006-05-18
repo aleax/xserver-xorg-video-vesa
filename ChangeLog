@@ -1,3 +1,10 @@
+2006-05-18  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+
+	* src/vesa.c: (VESAScreenInit), (VESACloseScreen):
+	* src/vesa.h:
+	Fix ShadowFB support to work with recent miext/shadow changes from
+	bug #5460.
+
 2006-04-07  Adam Jackson  <ajax@freedesktop.org>
 
 	* configure.ac:
