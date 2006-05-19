@@ -1,3 +1,9 @@
+2006-05-19  Adam Jackson  <ajax@freedesktop.org>
+
+	* configure.ac:
+	* src/vesa.h:
+	Bump to 1.2.0
+
 2006-05-18  Kevin E. Martin  <kem-at-freedesktop-dot-org>
 
 	* src/vesa.c: (VESAScreenInit), (VESACloseScreen):
