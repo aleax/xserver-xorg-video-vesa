@@ -1073,7 +1073,8 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
     if (data->data->XResolution != pScrn->displayWidth)
 	VBESetLogicalScanline(pVesa->pVbe, pScrn->displayWidth);
 
-    if (pScrn->bitsPerPixel == 8 && pVesa->vbeInfo->Capabilities[0] & 0x01)
+    if (pScrn->bitsPerPixel == 8 && pVesa->vbeInfo->Capabilities[0] & 0x01 &&
+        !(data->data->MemoryModel & 0x6 || data->data->MemoryModel & 0x7)) 
 	VBESetGetDACPaletteFormat(pVesa->pVbe, 8);
 
     pScrn->vtSema = TRUE;
