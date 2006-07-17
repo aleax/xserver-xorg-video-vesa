@@ -72,7 +72,7 @@ binary-arch: build install
 
 	dh_installdocs
 	dh_installchangelogs
-	dh_install --sourcedir=debian/tmp
+	dh_install --sourcedir=debian/tmp --list-missing
 	dh_link
 	dh_strip
 	dh_compress
