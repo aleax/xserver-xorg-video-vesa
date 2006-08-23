@@ -1,8 +1,13 @@
 xserver-xorg-video-vesa (1:1.2.1-2) UNRELEASED; urgency=low
 
+  [ Drew Parsons ]
   *  Provides: xserver-xorg-video-1.0 not xserver-xorg-video.
 
- -- Drew Parsons <dparsons@debian.org>  Wed, 23 Aug 2006 00:35:43 +1000
+  [ David Nusinow ]
+  * Bump xserver (build-)depends epochs to 2: to deal with botched
+    server upload
+
+ -- David Nusinow <dnusinow@debian.org>  Tue, 22 Aug 2006 23:31:37 +0000
 
 xserver-xorg-video-vesa (1:1.2.1-1) experimental; urgency=low
 
