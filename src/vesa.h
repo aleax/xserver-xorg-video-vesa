@@ -116,9 +116,13 @@ typedef struct _VESARec
     DGAModePtr pDGAMode;
     int nDGAMode;
     CloseScreenProcPtr CloseScreen;
+    CreateScreenResourcesProcPtr CreateScreenResources;
     OptionInfoPtr Options;
     IOADDRESS ioBase;
     Bool ModeSetClearScreen;
+    void *shadow;
+    ShadowUpdateProc update;
+    ShadowWindowProc window;
 } VESARec, *VESAPtr;
 
 
