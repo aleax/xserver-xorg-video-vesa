@@ -1,11 +1,15 @@
-xserver-xorg-video-vesa (1:1.2.1-4) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:1.3.0-1) unstable; urgency=low
 
+  [ Julien Cristau ]
   * Add link to xserver-xorg-core bug script, so that bugreports contain
     the user's config and log files.
   * Bump dependency on xserver-xorg-core to >= 2:1.1.1-11, as previous
     versions don't have the bug script.
 
- -- Julien Cristau <julien.cristau@ens-lyon.org>  Tue,  7 Nov 2006 07:30:46 +0100
+  [ David Nusinow ]
+  * New upstream version. Fixes shadowfb.
+
+ -- David Nusinow <dnusinow@debian.org>  Sun, 10 Dec 2006 19:49:32 -0500
 
 xserver-xorg-video-vesa (1:1.2.1-3) unstable; urgency=low
 
