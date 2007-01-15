@@ -57,6 +57,10 @@
 static const OptionInfoRec * VESAAvailableOptions(int chipid, int busid);
 static void VESAIdentify(int flags);
 static Bool VESAProbe(DriverPtr drv, int flags);
+#ifdef PCIACCESS
+static Bool VESAPciProbe(DriverPtr drv, int entity_num,
+     struct pci_device *dev, intptr_t match_data);
+#endif
 static Bool VESAPreInit(ScrnInfoPtr pScrn, int flags);
 static Bool VESAScreenInit(int Index, ScreenPtr pScreen, int argc,
 			   char **argv);
@@ -70,6 +74,7 @@ static Bool VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode);
 static void VESAAdjustFrame(int scrnIndex, int x, int y, int flags);
 static void VESAFreeScreen(int scrnIndex, int flags);
 static void VESAFreeRec(ScrnInfoPtr pScrn);
+static VESAPtr VESAGetRec(ScrnInfoPtr pScrn);
 
 static void
 VESADisplayPowerManagementSet(ScrnInfoPtr pScrn, int mode,
@@ -96,28 +101,22 @@ static void *VESAWindowWindowed(ScreenPtr pScrn, CARD32 row, CARD32 offset,
 
 static Bool VESADGAInit(ScrnInfoPtr pScrn, ScreenPtr pScreen);
 
-/* 
- * This contains the functions needed by the server after loading the
- * driver module.  It must be supplied, and gets added the driver list by
- * the Module Setup funtion in the dynamic case.  In the static case a
- * reference to this is compiled in, and this requires that the name of
- * this DriverRec be an upper-case version of the driver name.
- */
-_X_EXPORT DriverRec VESA = {
-    VESA_VERSION,
-    VESA_DRIVER_NAME,
-    VESAIdentify,
-    VESAProbe,
-    VESAAvailableOptions,
-    NULL,
-    0
-};
-
 enum GenericTypes
 {
     CHIP_VESA_GENERIC
 };
 
+#ifdef PCIACCESS
+static const struct pci_id_match vesa_device_match[] = {
+    {
+	PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY,
+	0x00030000, 0x00ffffff, CHIP_VESA_GENERIC 
+    },
+
+    { 0, 0, 0 },
+};
+#endif
+    
 /* Supported chipsets */
 static SymTabRec VESAChipsets[] =
 {
@@ -134,6 +133,31 @@ static IsaChipsets VESAISAchipsets[] = {
   {CHIP_VESA_GENERIC, RES_EXCLUSIVE_VGA},
   {-1,		0 }
 };
+
+
+/* 
+ * This contains the functions needed by the server after loading the
+ * driver module.  It must be supplied, and gets added the driver list by
+ * the Module Setup funtion in the dynamic case.  In the static case a
+ * reference to this is compiled in, and this requires that the name of
+ * this DriverRec be an upper-case version of the driver name.
+ */
+_X_EXPORT DriverRec VESA = {
+    VESA_VERSION,
+    VESA_DRIVER_NAME,
+    VESAIdentify,
+    VESAProbe,
+    VESAAvailableOptions,
+    NULL,
+    0,
+    NULL,
+
+#ifdef PCIACCESS
+    vesa_device_match,
+    VESAPciProbe
+#endif
+};
+
 
 typedef enum {
     OPTION_SHADOW_FB,
@@ -244,7 +268,7 @@ vesaSetup(pointer Module, pointer Options, int *ErrorMajor, int *ErrorMinor)
     if (!Initialised)
     {
 	Initialised = TRUE;
-	xf86AddDriver(&VESA, Module, 0);
+	xf86AddDriver(&VESA, Module, 1);
 	LoaderRefSymLists(miscfbSymbols,
 			  fbSymbols,
 			  shadowSymbols,
@@ -278,6 +302,37 @@ VESAIdentify(int flags)
  * do a minimal probe for supported hardware.
  */
 
+#ifdef PCIACCESS
+static Bool
+VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
+	     intptr_t match_data)
+{
+    ScrnInfoPtr pScrn;
+    
+    pScrn = xf86ConfigPciEntity(NULL, 0, entity_num, NULL, 
+				NULL, NULL, NULL, NULL, NULL);
+    if (pScrn != NULL) {
+	VESAPtr pVesa = VESAGetRec(pScrn);
+
+	pScrn->driverVersion = VESA_VERSION;
+	pScrn->driverName    = VESA_DRIVER_NAME;
+	pScrn->name	     = VESA_NAME;
+	pScrn->Probe	     = VESAProbe;
+	pScrn->PreInit       = VESAPreInit;
+	pScrn->ScreenInit    = VESAScreenInit;
+	pScrn->SwitchMode    = VESASwitchMode;
+	pScrn->AdjustFrame   = VESAAdjustFrame;
+	pScrn->EnterVT       = VESAEnterVT;
+	pScrn->LeaveVT       = VESALeaveVT;
+	pScrn->FreeScreen    = VESAFreeScreen;
+	
+	pVesa->pciInfo = dev;
+    }
+    
+    return (pScrn != NULL);
+}
+#endif
+
 static Bool
 VESAProbe(DriverPtr drv, int flags)
 {
@@ -295,6 +350,7 @@ VESAProbe(DriverPtr drv, int flags)
 					  &devSections)) <= 0)
 	return (FALSE);
 
+#ifdef PCIACCESS
     /* PCI BUS */
     if (xf86GetPciVideoInfo()) {
 	numUsed = xf86MatchPciInstances(VESA_NAME, PCI_VENDOR_GENERIC,
@@ -329,6 +385,7 @@ VESAProbe(DriverPtr drv, int flags)
 	    xfree(usedChips);
 	}
     }
+#endif
 
     /* Isa Bus */
     numUsed = xf86MatchIsaInstances(VESA_NAME,VESAChipsets,
@@ -482,14 +539,13 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 				       | RESTORE_BIOS_SCRATCH)) == NULL)
         return (FALSE);
 
+#ifndef PCIACCESS
     if (pVesa->pEnt->location.type == BUS_PCI) {
 	pVesa->pciInfo = xf86GetPciInfoForEntity(pVesa->pEnt->index);
 	pVesa->pciTag = pciTag(pVesa->pciInfo->bus, pVesa->pciInfo->device,
 			       pVesa->pciInfo->func);
-	pVesa->primary = xf86IsPrimaryPci(pVesa->pciInfo);
     }
-    else
-	pVesa->primary = TRUE;
+#endif
 
     pScrn->chipset = "vesa";
     pScrn->monitor = pScrn->confScreen->monitor;
@@ -1136,6 +1192,28 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
     pScrn->memPhysBase = pVesa->mapPhys;
     pScrn->fbOffset = pVesa->mapOff;
 
+#ifdef PCIACCESS
+    if ((pVesa->mapPhys != 0xa0000) && (pVesa->pciInfo != NULL)) {
+	(void) pci_device_map_memory_range(pVesa->pciInfo,
+					   pScrn->memPhysBase,
+					   pVesa->mapSize,
+					   TRUE,
+					   & pVesa->base);
+    }
+    else
+	pVesa->base = xf86MapDomainMemory(pScrn->scrnIndex, 0, pVesa->pciInfo,
+					  pScrn->memPhysBase, pVesa->mapSize);
+
+    if (pVesa->base) {
+	if (pVesa->mapPhys != 0xa0000)
+	    pVesa->VGAbase = xf86MapDomainMemory(pScrn->scrnIndex, 0,
+						 pVesa->pciInfo,
+						 0xa0000, 0x10000);
+	else
+	    pVesa->VGAbase = pVesa->base;
+
+    }
+#else
     if (pVesa->mapPhys != 0xa0000 && pVesa->pEnt->location.type == BUS_PCI)
 	pVesa->base = xf86MapPciMem(pScrn->scrnIndex, VIDMEM_FRAMEBUFFER,
 				    pVesa->pciTag, pScrn->memPhysBase,
@@ -1152,6 +1230,7 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
 	else
 	    pVesa->VGAbase = pVesa->base;
     }
+#endif
 
     pVesa->ioBase = pScrn->domainIOBase;
 
@@ -1171,9 +1250,21 @@ VESAUnmapVidMem(ScrnInfoPtr pScrn)
     if (pVesa->base == NULL)
 	return;
 
+#ifdef PCIACCESS
+    if (pVesa->mapPhys != 0xa0000) {
+	(void) pci_device_unmap_memory_range(pVesa->pciInfo,
+					     pVesa->base,
+					     pVesa->mapSize);
+	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->VGAbase, 0x10000);
+    }
+    else {
+	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->base, pVesa->mapSize);
+    }
+#else
     xf86UnMapVidMem(pScrn->scrnIndex, pVesa->base, pVesa->mapSize);
     if (pVesa->mapPhys != 0xa0000)
 	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->VGAbase, 0x10000);
+#endif
     pVesa->base = NULL;
 }
 
