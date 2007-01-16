@@ -350,7 +350,7 @@ VESAProbe(DriverPtr drv, int flags)
 					  &devSections)) <= 0)
 	return (FALSE);
 
-#ifdef PCIACCESS
+#ifndef PCIACCESS
     /* PCI BUS */
     if (xf86GetPciVideoInfo()) {
 	numUsed = xf86MatchPciInstances(VESA_NAME, PCI_VENDOR_GENERIC,
