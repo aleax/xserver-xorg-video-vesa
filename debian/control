@@ -9,7 +9,7 @@ Standards-Version: 3.6.1
 Package: xserver-xorg-video-vesa
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${xserver:Depends}
-Provides: xserver-xorg-video-1.1
+Provides: ${xviddriver:Provides}
 Replaces: xserver-xorg (<< 6.8.2-35)
 Description: X.Org X server -- VESA display driver
  This driver for the X.Org X server (see xserver-xorg for a further description)
