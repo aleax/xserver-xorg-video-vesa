@@ -188,7 +188,6 @@ static const char *miscfbSymbols[] = {
 #ifdef USE_AFB
     "afbScreenInit",
 #endif
-    "mfbScreenInit",
     NULL
 };
 #endif
@@ -772,10 +771,6 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 
     if (pVesa->shadowFB) {
 	xf86DrvMsg(pScrn->scrnIndex, X_CONFIG, "Using \"Shadow Framebuffer\"\n");
-	if (pScrn->depth == 1) {
-            mod = "mfb";
-	    reqSym = "mfbScreenInit";
-	}
 	if (!xf86LoadSubModule(pScrn, "shadow")) {
 	    vbeFree(pVesa->pVbe);
 	    return (FALSE);
