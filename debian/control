@@ -10,7 +10,8 @@ Package: xserver-xorg-video-vesa
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, xserver-xorg-core (>= 2:1.1.1-11)
 Provides: xserver-xorg-video-1.0
-Replaces: xserver-xorg (<< 6.8.2-35)
+Replaces: xserver-xorg (<< 6.8.2-35), xserver-xorg-driver-vesa
+Conflicts: xserver-xorg-driver-vesa
 Description: X.Org X server -- VESA display driver
  This driver for the X.Org X server (see xserver-xorg for a further description)
  uses the standard VESA interface provided on all video cards, but runs
