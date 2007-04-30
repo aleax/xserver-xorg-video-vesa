@@ -79,6 +79,10 @@
 
 #include "mfb.h"
 
+#ifdef PCIACCESS
+#include <pciaccess.h>
+#endif
+
 #define VESA_VERSION		4000
 #define VESA_NAME		"VESA"
 #define VESA_DRIVER_NAME	"vesa"
@@ -95,8 +99,12 @@ typedef struct _VESARec
     CARD16 major, minor;
     VbeInfoBlock *vbeInfo;
     GDevPtr device;
+#ifdef PCIACCESS
+    struct pci_device *pciInfo;
+#else
     pciVideoPtr pciInfo;
     PCITAG pciTag;
+#endif
     miBankInfoRec bank;
     int curBank, bankSwitchWindowB;
     CARD16 maxBytesPerScanline;
@@ -108,7 +116,7 @@ typedef struct _VESARec
     CARD32 *pal, *savedPal;
     CARD8 *fonts;
     xf86MonPtr monitor;
-    Bool shadowFB, primary;
+    Bool shadowFB;
     CARD32 windowAoffset;
     /* Don't override the default refresh rate. */
     Bool defaultRefresh;
