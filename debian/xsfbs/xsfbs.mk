@@ -1,11 +1,10 @@
 #!/usr/bin/make -f
-# $Id$
 
-# Debian rules file for xorg-x11 source package
+# Debian X Strike Force Build System (XSFBS): Make portion
 
 # Copyright 1996 Stephen Early
 # Copyright 1997 Mark Eichin
-# Copyright 1998-2005 Branden Robinson
+# Copyright 1998-2005, 2007 Branden Robinson
 # Copyright 2005 David Nusinow
 #
 # Licensed under the GNU General Public License, version 2.  See the file
@@ -127,7 +126,7 @@ $(STAMP_DIR)/prepare: $(STAMP_DIR)/stampdir
 	if [ ! -e $(STAMP_DIR)/log ]; then \
 		mkdir $(STAMP_DIR)/log; \
 	fi; \
-	if [ ! -e patches ]; then \
+	if [ -e debian/patches ] && [ ! -e patches ]; then \
 		ln -s debian/patches patches; \
 	fi; \
 	>$@
@@ -359,7 +358,7 @@ VIDEOABI = $(shell cat /usr/share/xserver-xorg/videoabiver 2>/dev/null)
 INPUTABI = $(shell cat /usr/share/xserver-xorg/inputabiver 2>/dev/null)
 SERVER_DEPENDS = xserver-xorg-core (>= $(SERVERMINVERS))
 VIDDRIVER_PROVIDES = xserver-xorg-video-$(VIDEOABI)
-INPDRIVER_PROVIDES = xserver-xorg-video-$(INPUTABI)
+INPDRIVER_PROVIDES = xserver-xorg-input-$(INPUTABI)
 ifeq ($(PACKAGE),)
 PACKAGE=$(shell awk '/^Package:/ { print $$2; exit }' < debian/control)
 endif
