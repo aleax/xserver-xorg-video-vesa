@@ -2,9 +2,11 @@ Source: xserver-xorg-video-vesa
 Section: x11
 Priority: optional
 Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
-Uploaders: David Nusinow <dnusinow@debian.org>, Branden Robinson <branden@debian.org>, Fabio M. Di Nitto <fabbione@fabbione.net>
-Build-Depends: debhelper (>= 5.0.0), pkg-config, xserver-xorg-dev (>= 2:1.2.0), x11proto-xext-dev, x11proto-core-dev, x11proto-fonts-dev, x11proto-randr-dev, x11proto-render-dev
+Uploaders: David Nusinow <dnusinow@debian.org>, Branden Robinson <branden@debian.org>
+Build-Depends: debhelper (>= 5.0.0), pkg-config, xserver-xorg-dev (>= 2:1.2.99.902), x11proto-xext-dev, x11proto-core-dev, x11proto-fonts-dev, x11proto-randr-dev, x11proto-render-dev
 Standards-Version: 3.6.1
+XS-Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-vesa
+XS-Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-vesa.git
 
 Package: xserver-xorg-video-vesa
 Architecture: any
@@ -20,8 +22,8 @@ Description: X.Org X server -- VESA display driver
  badly.
  .
  More information about X.Org can be found at:
+ <URL:http://www.X.org>
  <URL:http://xorg.freedesktop.org>
  <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
  .
- This module can be found as the module 'driver/xf86-video-vesa' at
- :pserver:anoncvs@cvs.freedesktop.org:/cvs/xorg
+ This package is built from the X.org xf86-video-vesa driver module.
