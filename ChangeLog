@@ -1,68 +1,349 @@
-2006-06-03  Daniel Stone  <daniel@freedesktop.org>
+commit 9bbe1c49b9d22736eded05909e144cc6e03050b4
+Author: Ian Romanick <idr@us.ibm.com>
+Date:   Mon Jan 15 17:31:18 2007 -0800
 
-	* configure.ac:
-	Bump to 1.2.1.
+    Correct '#ifdef' to '#ifndef'.  Oops.
 
-	* src/vesa.c:
-	Don't call VBEGetSetDACPaletteFormat when running in direct colour or
-	YUV modes.  (David Sterratt)
+commit 824ccaab986e1c2be6229350731b43f8831ebef7
+Author: Ian Romanick <idr@us.ibm.com>
+Date:   Mon Jan 15 13:16:52 2007 -0800
 
-2006-05-19  Adam Jackson  <ajax@freedesktop.org>
+    Add conditional support for pci-rework branch.
+    
+    To build VESA driver for use with pci-rework Xserver, add
+    --enable-pciacces to the configure command line.  Otherwise, the
+    "traditional" VESA driver will be built.
 
-	* configure.ac:
-	* src/vesa.h:
-	Bump to 1.2.0
+commit 7f4f198b21bc1df254912adb9592339b21d121f5
+Author: Adam Jackson <ajax@benzedrine.nwnk.net>
+Date:   Thu Nov 30 16:04:26 2006 -0500
 
-2006-05-18  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Bump to 1.3.0
 
-	* src/vesa.c: (VESAScreenInit), (VESACloseScreen):
-	* src/vesa.h:
-	Fix ShadowFB support to work with recent miext/shadow changes from
-	bug #5460.
+commit 7777730e7749fe6921e76a4a1738e0e2a0b16376
+Author: Adam Jackson <ajax@benzedrine.nwnk.net>
+Date:   Thu Nov 30 16:03:35 2006 -0500
 
-2006-04-07  Adam Jackson  <ajax@freedesktop.org>
+    Fix shadow support yet again.
 
-	* configure.ac:
-	* src/vesa.c:
-	* src/vesa.h:
-	Unlibcwrap.  Bump server version requirement.  Bump to 1.1.0.
+commit 7664016db9869d57d4279a9cb32a6ae0086c5b28
+Author: Adam Jackson <ajax@benzedrine.nwnk.net>
+Date:   Fri Oct 13 18:48:08 2006 -0400
 
-2005-12-20  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Bump to 1.2.2
 
-	* configure.ac:
-	Update package version for X11R7 release.
+commit 3b07dd7f43be7c1263f80eb279605a89c860dc4b
+Author: Daniel Stone <daniel@fooishbar.org>
+Date:   Sat Jun 3 09:46:27 2006 +0000
 
-2005-12-14  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Don't call VBEGetSetDACPaletteFormat when running in direct colour or YUV
+        modes. (David Sterratt) Bump to 1.2.1.
 
-	* configure.ac:
-	Update package version number for final X11R7 release candidate.
+commit a7315a314fa647a427805dc51f29558f6c607faa
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Fri May 19 19:10:12 2006 +0000
 
-2005-12-06  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Bump to 1.2.0
 
-	* man/Makefile.am:
-	Change *man_SOURCES ==> *man_PRE to fix autotools warnings.
+commit 2f586dac58dfa30246c7d404a3b08f6e287e5975
+Author: Kevin E Martin <kem@kem.org>
+Date:   Thu May 18 21:14:44 2006 +0000
 
-2005-12-03  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Fix ShadowFB support to work with recent miext/shadow changes from bug
+        #5460.
 
-	* configure.ac:
-	Update package version number for X11R7 RC3 release.
+commit 4129d5a0c0648afcf36b004e7f7b5b2de9b7ac27
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Fri Apr 7 21:47:15 2006 +0000
 
-2005-12-01  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Unlibcwrap. Bump server version requirement. Bump to 1.1.0.
 
-	* configure.ac:
-	Remove extraneous AC_MSG_RESULT.
+commit fba272fcbedd2c03760646f587144ab4c111c7df
+Author: Kevin E Martin <kem@kem.org>
+Date:   Wed Dec 21 02:30:04 2005 +0000
 
-2005-11-29  Adam Jackson  <ajax@freedesktop.org>
+    Update package version for X11R7 release.
 
-	* configure.ac:
-	Only build dlloader modules by default.
+commit 1bfb30439eccfa39a021cf84b630fe8b2a51bf3c
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Mon Dec 19 16:25:56 2005 +0000
 
-2005-11-09  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Stub COPYING files
 
-	* configure.ac:
-	Update package version number for X11R7 RC2 release.
+commit 6eae0ead000939ee39967e580d9d356fa00bc236
+Author: Alan Coopersmith <Alan.Coopersmith@sun.com>
+Date:   Mon Dec 19 09:07:51 2005 +0000
 
-2005-11-01  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+    Typo fixes, mailing list & url updates, and other changes to prepare for
+        X11R6.9 & 7.0 releases.
 
-	* configure.ac:
-	Update pkgcheck dependencies to work with separate build roots.
+commit 14a6c4cb9adde5f5f6009bd4eb30f6649eeea540
+Author: Kevin E Martin <kem@kem.org>
+Date:   Thu Dec 15 00:24:21 2005 +0000
+
+    Update package version number for final X11R7 release candidate.
+
+commit a7f95952dcc8319051118db938d0341bf5479a6e
+Author: Kevin E Martin <kem@kem.org>
+Date:   Tue Dec 6 22:48:40 2005 +0000
+
+    Change *man_SOURCES ==> *man_PRE to fix autotools warnings.
+
+commit 7ddc236e517ddae2660523a63c3d060029121e3d
+Author: Kevin E Martin <kem@kem.org>
+Date:   Sat Dec 3 05:49:36 2005 +0000
+
+    Update package version number for X11R7 RC3 release.
+
+commit 45d73281a9efe09292eab995c9796eb613edd6d1
+Author: Kevin E Martin <kem@kem.org>
+Date:   Fri Dec 2 02:16:11 2005 +0000
+
+    Remove extraneous AC_MSG_RESULT.
+
+commit ea8c88acd1cc1962cf8360144d4ea1c4b222ba17
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Tue Nov 29 23:30:06 2005 +0000
+
+    Only build dlloader modules by default.
+
+commit 62a4b6d0ec9b2ace7660cefd7d4aef6162c0d54d
+Author: Alan Coopersmith <Alan.Coopersmith@sun.com>
+Date:   Mon Nov 28 22:04:14 2005 +0000
+
+    Change *mandir targets to use new *_MAN_DIR variables set by xorg-macros.m4
+        update to fix bug #5167 (Linux prefers *.1x man pages in man1 subdir)
+
+commit 415fa60ef3a042851e93de5842312a8a695131b8
+Author: Eric Anholt <anholt@freebsd.org>
+Date:   Mon Nov 21 10:49:22 2005 +0000
+
+    Add .cvsignores for drivers.
+
+commit 10f025468598dafe646013cddafc43d90f6cbf0c
+Author: Kevin E Martin <kem@kem.org>
+Date:   Wed Nov 9 21:31:21 2005 +0000
+
+    Bump version numbers for X11R6.9/X11R7 RC2.
+
+commit e559685ed6f0e5ab2d947ea02dea11129623a37d
+Author: Kevin E Martin <kem@kem.org>
+Date:   Wed Nov 9 21:15:22 2005 +0000
+
+    Update package version number for X11R7 RC2 release.
+
+commit 0eb288746f85c73e7ae21838dfc52f177b963b29
+Author: Kevin E Martin <kem@kem.org>
+Date:   Tue Nov 1 15:08:57 2005 +0000
+
+    Update pkgcheck depedencies to work with separate build roots.
+
+commit 4e79cb7dd2d91af9777f4bea952c962c4e6c3a24
+Author: Alan Coopersmith <Alan.Coopersmith@sun.com>
+Date:   Wed Oct 26 21:36:25 2005 +0000
+
+    Don't try to restore savedPal in CloseScreen if savedPal is NULL, to avoid
+        segfault.
+
+commit 1ec47d75f37e1ab13145981524fc0c5bd6caae97
+Author: Kevin E Martin <kem@kem.org>
+Date:   Wed Oct 19 02:48:06 2005 +0000
+
+    Update package version number for RC1 release.
+
+commit 12cd0de9c963f61347ffde4513d5ed7deced79cc
+Author: Alan Coopersmith <Alan.Coopersmith@sun.com>
+Date:   Tue Oct 18 00:01:55 2005 +0000
+
+    Use @DRIVER_MAN_SUFFIX@ instead of $(DRIVER_MAN_SUFFIX) in macro
+        substitutions to work better with BSD make
+
+commit 849b2b280720536ba318a3fb79b34b0eb920245d
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Mon Oct 17 22:57:37 2005 +0000
+
+    More 1.7 braindamage: define EXTRA_DIST in terms of @DRIVER_NAME@ instead
+        of indirectly
+
+commit 08beda07409160136c8fbe846144731af699a66f
+Author: Alan Coopersmith <Alan.Coopersmith@sun.com>
+Date:   Mon Oct 17 00:09:08 2005 +0000
+
+    Use sed & cpp to substitute variables in driver man pages
+
+commit ff8c7b0b4d3c6789d9ff8d37e84f9c5a445c3515
+Author: Daniel Stone <daniel@fooishbar.org>
+Date:   Fri Aug 26 07:39:03 2005 +0000
+
+    Wrap afb calls in #ifdef USE_AFB. (Debian #015)
+
+commit 58313d626fbd332209f28e345aa8bdcc47113729
+Author: Daniel Stone <daniel@fooishbar.org>
+Date:   Fri Aug 26 06:55:35 2005 +0000
+
+    Wrap afb calls in #ifdef USE_AFB. (Debian #015)
+
+commit 0a3e6b28c75312d42ed5dc5db3d31262d7ec3b75
+Author: Daniel Stone <daniel@fooishbar.org>
+Date:   Thu Aug 18 09:03:55 2005 +0000
+
+    Update autogen.sh to one that does objdir != srcdir.
+
+commit 3251a5e09646f88a80b40385d2bb8e5417bdc388
+Author: Søren Sandmann Pedersen <sandmann@daimi.au.dk>
+Date:   Wed Aug 10 14:07:25 2005 +0000
+
+    Don\'t lose existing CFLAGS in all the input drivers and some of the video
+        drivers
+
+commit ab1ec5ee5b02d4cd3faf7ae5338fa4081ec1257c
+Author: Kevin E Martin <kem@kem.org>
+Date:   Fri Jul 29 21:22:46 2005 +0000
+
+    Various changes preparing packages for RC0:
+    - Verify and update package version numbers as needed
+    - Implement versioning scheme
+    - Change bug address to point to bugzilla bug entry form
+    - Disable loadable i18n in libX11 by default (use --enable-loadable-i18n to
+        reenable it)
+    - Fix makedepend to use pkgconfig and pass distcheck
+    - Update build script to build macros first
+    - Update modular Xorg version
+
+commit dfe2847e4720793b4ff80d717aba31079a065392
+Author: Søren Sandmann Pedersen <sandmann@daimi.au.dk>
+Date:   Wed Jul 13 21:51:06 2005 +0000
+
+    add Makefile.am
+
+commit 8100f70d79c0d1a405eeb576898a182cef8d4c3b
+Author: Søren Sandmann Pedersen <sandmann@daimi.au.dk>
+Date:   Wed Jul 13 21:50:33 2005 +0000
+
+    add Makefile.am
+
+commit be230c6144ff1dd12b0d7acce4a2a478c0be3527
+Author: Søren Sandmann Pedersen <sandmann@daimi.au.dk>
+Date:   Wed Jul 13 21:46:36 2005 +0000
+
+    Build system for vesa video driver
+
+commit af35fdc8d552424cc74872aac364e48f42d5e409
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Mon Jul 11 02:30:06 2005 +0000
+
+    Prep for modular builds by adding guarded #include "config.h" everywhere.
+
+commit b3ef5c7885d59f81847e2e7394683c91617b5cc1
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Sat Jun 25 21:17:00 2005 +0000
+
+    Bug #3626: _X_EXPORT tags for video and input drivers.
+
+commit 9f2b6b63add7822dea966f489f496c7a2edfa19c
+Author: Egbert Eich <eich@suse.de>
+Date:   Mon May 9 17:40:51 2005 +0000
+
+    VBE Set Mode (0x02) to not clear the screen causes problems on some BIOSes.
+        This fix adds an option to disable it (Bugzilla #3246).
+
+commit 0b142fd735496c72ead409e1f89caa1da8d80f6e
+Author: Daniel Stone <daniel@fooishbar.org>
+Date:   Wed Apr 20 12:25:32 2005 +0000
+
+    Fix includes right throughout the Xserver tree:
+    change "foo.h" to <X11/foo.h> for core headers, e.g. X.h, Xpoll.h;
+    change "foo.h", "extensions/foo.h" and "X11/foo.h" to
+        <X11/extensions/foo.h> for extension headers, e.g. Xv.h;
+    change "foo.[ch]" to <X11/Xtrans/foo.[ch]> for Xtrans files.
+
+commit 16af3cc966b0f79388e9a8a68f75f62f6c30a756
+Author: Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>
+Date:   Sat Dec 4 00:43:10 2004 +0000
+
+    Encoding of numerous files changed to UTF-8
+
+commit 160cc48048a4944d0a8d0b8a42c22bae61de0319
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Fri Sep 17 03:04:54 2004 +0000
+
+    Bug #1192: Remove cfb support from drivers where its use is an option.
+        Delete xf24_32bpp, as s3virge was the last user. Fix up some comments
+        to refer to fb rather than cfb.
+
+commit 09f88863a0bdf236200107631ff93f27bb03f6f4
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Wed Aug 11 19:52:13 2004 +0000
+
+    Fix vesa.c's shadow symbol list.
+
+commit 088edb719db194dd352c09ae3fa799e4653de9e6
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Tue Aug 3 02:44:21 2004 +0000
+
+    Bug #962: Remove LoaderSymbol calls introduced by the dlloader work so
+        DoLoadableServer NO builds work again.
+
+commit a6a753d5a5c1c167670a4144c7ace39d688fd1e5
+Author: Adam Jackson <ajax@nwnk.net>
+Date:   Fri Jul 30 20:30:55 2004 +0000
+
+    Bug #400 (partial): Driver fixes for the dlloader. When using dlloader, all
+        framebuffer formats except cfb and the overlay modes should work, and
+        r128 and radeon need to be loaded from the ati driver (both issues to
+        be fixed soon). Tested on i740, s3virge, mach64, tdfx, vesa, and vga
+        drivers. elfloader users shouldn't be affected.
+
+commit 03b2fd85a09d9787d1895cdb7e418e7543288fd9
+Author: Eric Anholt <anholt@freebsd.org>
+Date:   Wed Jun 16 09:24:10 2004 +0000
+
+    DRI XFree86-4_3_99_12-merge import
+
+commit 283c0359be82bfac45781ad06d2ff0965daef73e
+Author: Egbert Eich <eich@suse.de>
+Date:   Fri Apr 23 19:52:54 2004 +0000
+
+    Merging XORG-CURRENT into trunk
+
+commit fd59c1875f4f249cf42b46cfa763a1d221463f74
+Author: Egbert Eich <eich@suse.de>
+Date:   Sun Mar 14 08:33:41 2004 +0000
+
+    Importing vendor version xf86-4_4_99_1 on Sun Mar 14 00:26:39 PST 2004
+
+commit 3837d4b3421a71c631b6f17813c747446bf49246
+Author: Egbert Eich <eich@suse.de>
+Date:   Wed Mar 3 12:12:28 2004 +0000
+
+    Importing vendor version xf86-4_4_0 on Wed Mar 3 04:09:24 PST 2004
+
+commit acd0b5c42b504749bb6bd3f0c416fc838fc31b05
+Author: Egbert Eich <eich@suse.de>
+Date:   Thu Feb 26 13:35:55 2004 +0000
+
+    readding XFree86's cvs IDs
+
+commit 11f19e03e7d229b3828513d464288c4aad99d26d
+Author: Egbert Eich <eich@suse.de>
+Date:   Thu Feb 26 09:23:28 2004 +0000
+
+    Importing vendor version xf86-4_3_99_903 on Wed Feb 26 01:21:00 PST 2004
+
+commit 617431e758a198202ba5f54347492e9b25084c07
+Author: Kaleb Keithley <kaleb@freedesktop.org>
+Date:   Tue Nov 25 19:28:43 2003 +0000
+
+    XFree86 4.3.99.16 Bring the tree up to date for the Cygwin folks
+
+commit 1d3328676ee5e2435332c28888b9bc9ff15a68ee
+Author: Kaleb Keithley <kaleb@freedesktop.org>
+Date:   Fri Nov 14 16:48:55 2003 +0000
+
+    XFree86 4.3.0.1
+
+commit 53bc9c90fed82c0bab644acdc30114fe3a390652
+Author: Kaleb Keithley <kaleb@freedesktop.org>
+Date:   Fri Nov 14 16:48:55 2003 +0000
+
+    Initial revision
