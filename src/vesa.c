@@ -814,6 +814,16 @@ vesaCreateScreenResources(ScreenPtr pScreen)
     return ret;
 }
 
+static void
+vesaEnableDisableFBAccess(int scrnIndex, Bool enable)
+{
+    ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
+    VESAPtr pVesa = VESAGetRec(pScrn);
+
+    pVesa->accessEnabled = enable;
+    pVesa->EnableDisableFBAccess(scrnIndex, enable);
+}
+
 static Bool
 VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 {
@@ -1039,6 +1049,10 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	VESALoadPalette, NULL, flags))
 	return (FALSE);
 
+    pVesa->accessEnabled = TRUE;
+    pVesa->EnableDisableFBAccess = pScrn->EnableDisableFBAccess;
+    pScrn->EnableDisableFBAccess = vesaEnableDisableFBAccess;
+
     pVesa->CloseScreen = pScreen->CloseScreen;
     pScreen->CloseScreen = VESACloseScreen;
     pScreen->SaveScreen = VESASaveScreen;
@@ -1091,6 +1105,7 @@ VESACloseScreen(int scrnIndex, ScreenPtr pScreen)
     }
     pScrn->vtSema = FALSE;
 
+    pScrn->EnableDisableFBAccess = pVesa->EnableDisableFBAccess;
     pScreen->CreateScreenResources = pVesa->CreateScreenResources;
     pScreen->CloseScreen = pVesa->CloseScreen;
     return pScreen->CloseScreen(scrnIndex, pScreen);
@@ -1101,12 +1116,12 @@ VESASwitchMode(int scrnIndex, DisplayModePtr pMode, int flags)
 {
     ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
     VESAPtr pVesa = VESAGetRec(pScrn);
-    Bool ret;
+    Bool ret, disableAccess = pVesa->ModeSetClearScreen && pVesa->accessEnabled;
 
-    if (pVesa->ModeSetClearScreen) 
+    if (disableAccess)
 	pScrn->EnableDisableFBAccess(scrnIndex,FALSE);
     ret = VESASetMode(xf86Screens[scrnIndex], pMode);
-    if (pVesa->ModeSetClearScreen) 
+    if (disableAccess)
 	pScrn->EnableDisableFBAccess(scrnIndex,TRUE);
     return ret;
 }

@@ -125,6 +125,8 @@ typedef struct _VESARec
     int nDGAMode;
     CloseScreenProcPtr CloseScreen;
     CreateScreenResourcesProcPtr CreateScreenResources;
+    xf86EnableDisableFBAccessProc *EnableDisableFBAccess;
+    Bool accessEnabled;
     OptionInfoPtr Options;
     IOADDRESS ioBase;
     Bool ModeSetClearScreen;
