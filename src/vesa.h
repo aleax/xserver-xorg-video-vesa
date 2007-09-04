@@ -79,7 +79,7 @@
 
 #include "mfb.h"
 
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
 #include <pciaccess.h>
 #endif
 
@@ -99,7 +99,7 @@ typedef struct _VESARec
     CARD16 major, minor;
     VbeInfoBlock *vbeInfo;
     GDevPtr device;
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
     struct pci_device *pciInfo;
 #else
     pciVideoPtr pciInfo;

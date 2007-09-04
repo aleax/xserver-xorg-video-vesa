@@ -57,7 +57,7 @@
 static const OptionInfoRec * VESAAvailableOptions(int chipid, int busid);
 static void VESAIdentify(int flags);
 static Bool VESAProbe(DriverPtr drv, int flags);
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
 static Bool VESAPciProbe(DriverPtr drv, int entity_num,
      struct pci_device *dev, intptr_t match_data);
 #endif
@@ -106,7 +106,7 @@ enum GenericTypes
     CHIP_VESA_GENERIC
 };
 
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
 static const struct pci_id_match vesa_device_match[] = {
     {
 	PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY,
@@ -152,7 +152,7 @@ _X_EXPORT DriverRec VESA = {
     0,
     NULL,
 
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
     vesa_device_match,
     VESAPciProbe
 #endif
@@ -301,7 +301,7 @@ VESAIdentify(int flags)
  * do a minimal probe for supported hardware.
  */
 
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
 static Bool
 VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
 	     intptr_t match_data)
@@ -349,7 +349,7 @@ VESAProbe(DriverPtr drv, int flags)
 					  &devSections)) <= 0)
 	return (FALSE);
 
-#ifndef PCIACCESS
+#ifndef XSERVER_LIBPCIACCESS
     /* PCI BUS */
     if (xf86GetPciVideoInfo()) {
 	numUsed = xf86MatchPciInstances(VESA_NAME, PCI_VENDOR_GENERIC,
@@ -538,7 +538,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 				       | RESTORE_BIOS_SCRATCH)) == NULL)
         return (FALSE);
 
-#ifndef PCIACCESS
+#ifndef XSERVER_LIBPCIACCESS
     if (pVesa->pEnt->location.type == BUS_PCI) {
 	pVesa->pciInfo = xf86GetPciInfoForEntity(pVesa->pEnt->index);
 	pVesa->pciTag = pciTag(pVesa->pciInfo->bus, pVesa->pciInfo->device,
@@ -1202,7 +1202,7 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
     pScrn->memPhysBase = pVesa->mapPhys;
     pScrn->fbOffset = pVesa->mapOff;
 
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
     if ((pVesa->mapPhys != 0xa0000) && (pVesa->pciInfo != NULL)) {
 	(void) pci_device_map_memory_range(pVesa->pciInfo,
 					   pScrn->memPhysBase,
@@ -1260,7 +1260,7 @@ VESAUnmapVidMem(ScrnInfoPtr pScrn)
     if (pVesa->base == NULL)
 	return;
 
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
     if (pVesa->mapPhys != 0xa0000) {
 	(void) pci_device_unmap_memory_range(pVesa->pciInfo,
 					     pVesa->base,
