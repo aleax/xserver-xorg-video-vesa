@@ -1204,11 +1204,11 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
 
 #ifdef XSERVER_LIBPCIACCESS
     if ((pVesa->mapPhys != 0xa0000) && (pVesa->pciInfo != NULL)) {
-	(void) pci_device_map_memory_range(pVesa->pciInfo,
-					   pScrn->memPhysBase,
-					   pVesa->mapSize,
-					   TRUE,
-					   & pVesa->base);
+	(void) pci_device_map_range(pVesa->pciInfo, pScrn->memPhysBase,
+				    pVesa->mapSize,
+				    (PCI_DEV_MAP_FLAG_WRITABLE
+				     | PCI_DEV_MAP_FLAG_WRITE_COMBINE),
+				    & pVesa->base);
     }
     else
 	pVesa->base = xf86MapDomainMemory(pScrn->scrnIndex, 0, pVesa->pciInfo,
@@ -1262,9 +1262,8 @@ VESAUnmapVidMem(ScrnInfoPtr pScrn)
 
 #ifdef XSERVER_LIBPCIACCESS
     if (pVesa->mapPhys != 0xa0000) {
-	(void) pci_device_unmap_memory_range(pVesa->pciInfo,
-					     pVesa->base,
-					     pVesa->mapSize);
+	(void) pci_device_unmap_range(pVesa->pciInfo, pVesa->base,
+				      pVesa->mapSize);
 	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->VGAbase, 0x10000);
     }
     else {
