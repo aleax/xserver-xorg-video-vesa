@@ -1,4 +1,4 @@
-xserver-xorg-video-vesa (1:1.3.0-3) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:1.3.0-3) experimental; urgency=low
 
   [ Timo Aaltonen ]
   * Replaces/Conflicts: xserver-xorg-driver-vesa.
@@ -12,7 +12,11 @@ xserver-xorg-video-vesa (1:1.3.0-3) UNRELEASED; urgency=low
     module in the long description.
   * Remove Fabio from uploaders with his permission. He's always welcome back.
 
- -- Brice Goglin <Brice.Goglin@ens-lyon.org>  Mon, 30 Apr 2007 03:11:08 +0200
+  [ David Nusinow ]
+  * Build against and build-dep on xserver 1.4
+  * Bump standards version to 3.7.2.2. No changes necessary.
+
+ -- David Nusinow <dnusinow@debian.org>  Sun, 09 Sep 2007 21:49:38 -0400
 
 xserver-xorg-video-vesa (1:1.3.0-2) experimental; urgency=low
 
