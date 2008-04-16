@@ -181,17 +181,6 @@ static const OptionInfoRec VESAOptions[] = {
  * xf86LoaderReqSymLists().  The purpose is this is to avoid warnings about
  * unresolved symbols that are not required.
  */
-#ifdef XFree86LOADER
-static const char *miscfbSymbols[] = {
-    "xf1bppScreenInit",
-    "xf4bppScreenInit",
-#ifdef USE_AFB
-    "afbScreenInit",
-#endif
-    NULL
-};
-#endif
-
 static const char *fbSymbols[] = {
     "fbPictureInit",
     "fbScreenInit",
@@ -268,8 +257,7 @@ vesaSetup(pointer Module, pointer Options, int *ErrorMajor, int *ErrorMinor)
     {
 	Initialised = TRUE;
 	xf86AddDriver(&VESA, Module, 1);
-	LoaderRefSymLists(miscfbSymbols,
-			  fbSymbols,
+	LoaderRefSymLists(fbSymbols,
 			  shadowSymbols,
 			  vbeSymbols,
 			  ddcSymbols,
@@ -715,39 +703,11 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 	case 0x0:	/* Text mode */
 	case 0x1:	/* CGA graphics */
 	case 0x2:	/* Hercules graphics */
+	case 0x3:	/* Planar */
 	case 0x5:	/* Non-chain 4, 256 color */
 	case 0x7:	/* YUV */
 	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
 		       "Unsupported Memory Model: %d", mode->MemoryModel);
-	    break;
-	case 0x3:	/* Planar */
-	    if (pVesa->shadowFB) {
-		mod = "fb";
-		pScrn->bitmapBitOrder = BITMAP_BIT_ORDER; 
-
-		xf86LoaderReqSymbols("fbPictureInit", NULL);
-	    }
-	    else {
-		switch (pScrn->bitsPerPixel) {
-		    case 1:
-			mod = "xf1bpp";
-			reqSym = "xf1bppScreenInit";
-			break;
-		    case 4:
-			mod = "xf4bpp";
-			reqSym = "xf4bppScreenInit";
-			break;
-		    default:
-#ifdef USE_AFB
-			mod = "afb";
-			reqSym = "afbScreenInit";
-			break;
-#else
-			xf86DrvMsg(pScrn->scrnIndex, X_ERROR, 
-				   "Unsupported bpp: %d", pScrn->bitsPerPixel);
-#endif
-		}
-	    }
 	    break;
 	case 0x4:	/* Packed pixel */
 	case 0x6:	/*  Direct Color */
@@ -914,37 +874,12 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	case 0x0:	/* Text mode */
 	case 0x1:	/* CGA graphics */
 	case 0x2:	/* Hercules graphics */
+	case 0x3:	/* Planar */
 	case 0x5:	/* Non-chain 4, 256 color */
 	case 0x7:	/* YUV */
 	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
 		       "Unsupported Memory Model: %d", mode->MemoryModel);
 	    return (FALSE);
-	case 0x3:	/* Planar */
-		switch (pScrn->bitsPerPixel) {
-		    case 1:
-			if (!xf1bppScreenInit(pScreen, pVesa->base,
-					      pScrn->virtualX, pScrn->virtualY,
-					      pScrn->xDpi, pScrn->yDpi,
-					      pScrn->displayWidth))
-			    return (FALSE);
-			break;
-		    case 4:
-			if (!xf4bppScreenInit(pScreen, pVesa->base,
-					      pScrn->virtualX, pScrn->virtualY,
-					      pScrn->xDpi, pScrn->yDpi,
-					      pScrn->displayWidth))
-			    return (FALSE);
-			break;
-		    default:
-#ifdef USE_AFB
-			if (!afbScreenInit(pScreen, pVesa->base,
-					   pScrn->virtualX, pScrn->virtualY,
-					   pScrn->xDpi, pScrn->yDpi, pScrn->displayWidth))
-#endif
-			    return (FALSE);
-			break;
-		}
-	    break;
 	case 0x4:	/* Packed pixel */
 	case 0x6:	/*  Direct Color */
 	    switch (pScrn->bitsPerPixel) {
@@ -989,14 +924,7 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	fbPictureInit(pScreen, 0, 0);
 
     if (pVesa->shadowFB) {
-	if (mode->MemoryModel == 3) {	/* Planar */
-	  if (pScrn->bitsPerPixel == 8)
-		pVesa->update = shadowUpdatePlanar4x8Weak();
-	    else
-		pVesa->update = shadowUpdatePlanar4Weak();
-	    pVesa->window = VESAWindowPlanar;
-	}
-	else if (pVesa->mapPhys == 0xa0000) {	/* Windowed */
+	if (pVesa->mapPhys == 0xa0000) {	/* Windowed */
 	    pVesa->update = shadowUpdatePackedWeak();
 	    pVesa->window = VESAWindowWindowed;
 	}
@@ -1010,7 +938,7 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	pVesa->CreateScreenResources = pScreen->CreateScreenResources;
 	pScreen->CreateScreenResources = vesaCreateScreenResources;
     }
-    else if (pVesa->mapPhys == 0xa0000 && mode->MemoryModel != 0x3) {
+    else if (pVesa->mapPhys == 0xa0000) {
 	unsigned int bankShift = 0;
 	while ((unsigned)(64 >> bankShift) != mode->WinGranularity)
 	    bankShift++;

@@ -69,15 +69,7 @@
 #include "xf86Resources.h"
 #include "xf86RAC.h"
 
-#include "xf1bpp.h"
-#include "xf4bpp.h"
 #include "fb.h"
-
-#ifdef USE_AFB
-#include "afb.h"
-#endif
-
-#include "mfb.h"
 
 #ifdef XSERVER_LIBPCIACCESS
 #include <pciaccess.h>
