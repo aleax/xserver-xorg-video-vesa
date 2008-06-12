@@ -691,8 +691,9 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     if (xf86ReturnOptValBool(pVesa->Options, OPTION_DFLT_REFRESH, FALSE))
 	pVesa->defaultRefresh = TRUE;
 
+    pVesa->ModeSetClearScreen = FALSE;
     if (xf86ReturnOptValBool(pVesa->Options, OPTION_MODESET_CLEAR_SCREEN, 
-			     TRUE))
+			     FALSE))
 	pVesa->ModeSetClearScreen = TRUE;
 
     if (!pVesa->defaultRefresh)
@@ -1065,7 +1066,9 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
     pVesa = VESAGetRec(pScrn);
 
     data = (VbeModeInfoData*)pMode->Private;
-    mode = data->mode | ( pVesa->ModeSetClearScreen ?  (1U << 15)  : 0);
+
+    /* careful, setting the bit means don't clear the screen */
+    mode = data->mode | (pVesa->ModeSetClearScreen ? 0 : (1U << 15));
 
     /* enable linear addressing */
     if (pVesa->mapPhys != 0xa0000)
