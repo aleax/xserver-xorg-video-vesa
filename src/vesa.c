@@ -439,6 +439,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     int i;
     int flags24 = 0;
     int defaultDepth = 0;
+    int defaultBpp = 0;
     int depths = 0;
 
     if (flags & PROBE_DETECT)
@@ -485,31 +486,29 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 				    V_MODETYPE_VBE);
 
     /* Preferred order for default depth selection. */
-    if (depths & V_DEPTH_16)
+    if (depths & V_DEPTH_24)
+	defaultDepth = 24;
+    else if (depths & V_DEPTH_16)
 	defaultDepth = 16;
     else if (depths & V_DEPTH_15)
 	defaultDepth = 15;
     else if (depths & V_DEPTH_8)
 	defaultDepth = 8;
-    else if (depths & V_DEPTH_24)
-	defaultDepth = 24;
     else if (depths & V_DEPTH_4)
 	defaultDepth = 4;
     else if (depths & V_DEPTH_1)
 	defaultDepth = 1;
 
-    /*
-     * Setting this avoids a "Driver can't support depth 24" message,
-     * which could be misleading.
-     */
-    if (!flags24)
-	flags24 = Support24bppFb;
+    if (defaultDepth == 24 && !(flags24 & Support32bppFb))
+	defaultBpp = 24;
 
-    /* Prefer 24bpp for fb since it potentially allows larger modes. */
+    /* Prefer 32bpp because 1999 called and wants its packed pixels back */
+    if (flags24 & Support32bppFb)
+	flags24 |= SupportConvert24to32 | PreferConvert24to32;
     if (flags24 & Support24bppFb)
-	flags24 |= SupportConvert32to24 | PreferConvert32to24;
+	flags24 |= SupportConvert32to24;
 
-    if (!xf86SetDepthBpp(pScrn, defaultDepth, 0, 0, flags24)) {
+    if (!xf86SetDepthBpp(pScrn, defaultDepth, 0, defaultBpp, flags24)) {
         vbeFree(pVesa->pVbe);
 	return (FALSE);
     }
