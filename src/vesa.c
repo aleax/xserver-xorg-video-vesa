@@ -1,6 +1,7 @@
 #define DEBUG_VERB 2
 /*
  * Copyright (c) 2000 by Conectiva S.A. (http://www.conectiva.com)
+ * Copyright 2008 Red Hat, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,7 +28,7 @@
  *
  * Authors: Paulo César Pereira de Andrade <pcpa@conectiva.com.br>
  *          David Dawes <dawes@xfree86.org>
- *
+ *          Adam Jackson <ajax@redhat.com>
  */
 
 #ifdef HAVE_CONFIG_H
