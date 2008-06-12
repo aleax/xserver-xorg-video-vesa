@@ -47,6 +47,7 @@
 /* Colormap handling */
 #include "micmap.h"
 #include "xf86cmap.h"
+#include "xf86Modes.h"
 
 /* DPMS */
 #define DPMS_SERVER
@@ -228,6 +229,128 @@ VESAIdentify(int flags)
     xf86PrintChipsets(VESA_NAME, "driver for VESA chipsets", VESAChipsets);
 }
 
+static VESAPtr
+VESAGetRec(ScrnInfoPtr pScrn)
+{
+    if (!pScrn->driverPrivate)
+	pScrn->driverPrivate = xcalloc(sizeof(VESARec), 1);
+
+    return ((VESAPtr)pScrn->driverPrivate);
+}
+
+/* Only a little like VBESetModeParameters */
+static void
+VESASetModeParameters(vbeInfoPtr pVbe, DisplayModePtr vbemode,
+		      DisplayModePtr ddcmode)
+{
+    VbeModeInfoData *data;
+    int clock;
+
+    data = (VbeModeInfoData *)vbemode->Private;
+
+    data->block = xcalloc(sizeof(VbeCRTCInfoBlock), 1);
+    data->block->HorizontalTotal = ddcmode->HTotal;
+    data->block->HorizontalSyncStart = ddcmode->HSyncStart;
+    data->block->HorizontalSyncEnd = ddcmode->HSyncEnd;
+    data->block->VerticalTotal = ddcmode->VTotal;
+    data->block->VerticalSyncStart = ddcmode->VSyncStart;
+    data->block->VerticalSyncEnd = ddcmode->VSyncEnd;
+    data->block->Flags = ((ddcmode->Flags & V_NHSYNC) ? CRTC_NHSYNC : 0) |
+	                 ((ddcmode->Flags & V_NVSYNC) ? CRTC_NVSYNC : 0);
+    data->block->PixelClock = ddcmode->Clock * 1000;
+
+    /* ask the BIOS to figure out the real clock */
+    clock = VBEGetPixelClock(pVbe, data->mode, data->block->PixelClock);
+    if (clock)
+	data->block->PixelClock = clock;
+
+    data->mode |= (1 << 11);
+    data->block->RefreshRate = 100 * ((double)(data->block->PixelClock) /
+				(double)(ddcmode->HTotal * ddcmode->VTotal));
+}
+
+static ModeStatus
+VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
+{
+    static int warned = 0;
+    int found = 0;
+    ScrnInfoPtr pScrn = xf86Screens[scrn];
+    VESAPtr pVesa = VESAGetRec(pScrn);
+    MonPtr mon = pScrn->monitor;
+    ModeStatus ret;
+    DisplayModePtr mode;
+    float v;
+
+    pVesa = VESAGetRec(pScrn);
+
+    if (pass != MODECHECK_FINAL) {
+	if (!warned) {
+	    xf86DrvMsg(scrn, X_WARNING, "VESAValidMode called unexpectedly\n");
+	    warned = 1;
+	}
+	return MODE_OK;
+    }
+
+    /*
+     * This is suboptimal.  We pass in just the barest description of a mode
+     * we can get away with to VBEValidateModes, so it can't really throw
+     * out anything we give it.  But we need to filter the list so that we
+     * don't populate the mode list with things the monitor can't do.
+     *
+     * So first off, if this isn't a mode we handed to the server (ie,
+     * M_T_BUILTIN), then we know we can't do it.
+     */
+    if (!(p->type & M_T_BUILTIN))
+	return MODE_NOMODE;
+
+    if (pVesa->strict_validation) {
+	/*
+	 * If it's our first pass at mode validation, we'll try for a strict
+	 * intersection between the VBE and DDC mode lists.
+	 */
+	if (pScrn->monitor->DDC) {
+	    for (mode = pScrn->monitor->Modes; mode; mode = mode->next) {
+		if (mode->type & M_T_DRIVER && 
+			mode->HDisplay == p->HDisplay &&
+			mode->VDisplay == p->VDisplay) {
+		    if (xf86CheckModeForMonitor(mode, mon) == MODE_OK) {
+			found = 1;
+			break;
+		    }
+		}
+		if (mode == pScrn->monitor->Last)
+		    break;
+	    }
+	    if (!found)
+		return MODE_NOMODE;
+
+	    /* having found a matching mode, stash the CRTC values aside */
+	    VESASetModeParameters(pVesa->pVbe, p, mode);
+	    return MODE_OK;
+	}
+
+	/* No DDC and no modes make Homer something something... */
+	return MODE_NOMODE;
+    }
+
+    /*
+     * Finally, walk through the vsync rates 1Hz at a time looking for a mode
+     * that will fit.  This is assuredly a terrible way to do this, but
+     * there's no obvious method for computing a mode of a given size that
+     * will pass xf86CheckModeForMonitor.  XXX this path is terrible, but
+     * then, by this point, you're well into despair territory.
+     */
+    for (v = mon->vrefresh[0].lo; v <= mon->vrefresh[0].hi; v++) {
+	mode = xf86GTFMode(p->HDisplay, p->VDisplay, v, 0, 0);
+	ret = xf86CheckModeForMonitor(mode, mon);
+	xfree(mode);
+	if (ret == MODE_OK)
+	    break;
+    }
+
+    return ret;
+}
+
 /*
  * This function is called once, at the start of the first server generation to
  * do a minimal probe for supported hardware.
@@ -252,6 +375,7 @@ VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
 	pScrn->PreInit       = VESAPreInit;
 	pScrn->ScreenInit    = VESAScreenInit;
 	pScrn->SwitchMode    = VESASwitchMode;
+	pScrn->ValidMode     = VESAValidMode;
 	pScrn->AdjustFrame   = VESAAdjustFrame;
 	pScrn->EnterVT       = VESAEnterVT;
 	pScrn->LeaveVT       = VESALeaveVT;
@@ -305,6 +429,7 @@ VESAProbe(DriverPtr drv, int flags)
 			pScrn->PreInit       = VESAPreInit;
 			pScrn->ScreenInit    = VESAScreenInit;
 			pScrn->SwitchMode    = VESASwitchMode;
+			pScrn->ValidMode     = VESAValidMode;
 			pScrn->AdjustFrame   = VESAAdjustFrame;
 			pScrn->EnterVT       = VESAEnterVT;
 			pScrn->LeaveVT       = VESALeaveVT;
@@ -339,6 +464,7 @@ VESAProbe(DriverPtr drv, int flags)
 		pScrn->PreInit       = VESAPreInit;
 		pScrn->ScreenInit    = VESAScreenInit;
 		pScrn->SwitchMode    = VESASwitchMode;
+		pScrn->ValidMode     = VESAValidMode;
 		pScrn->AdjustFrame   = VESAAdjustFrame;
 		pScrn->EnterVT       = VESAEnterVT;
 		pScrn->LeaveVT       = VESALeaveVT;
@@ -377,15 +503,6 @@ VESAFindIsaDevice(GDevPtr dev)
       return -1;
 #endif
     return (int)CHIP_VESA_GENERIC;
-}
-
-static VESAPtr
-VESAGetRec(ScrnInfoPtr pScrn)
-{
-    if (!pScrn->driverPrivate)
-	pScrn->driverPrivate = xcalloc(sizeof(VESARec), 1);
-
-    return ((VESAPtr)pScrn->driverPrivate);
 }
 
 static void
@@ -569,11 +686,26 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 
     VBESetModeNames(pScrn->modePool);
 
+    pVesa->strict_validation = TRUE;
     i = VBEValidateModes(pScrn, NULL, pScrn->display->modes, 
 			  NULL, NULL, 0, 2048, 1, 0, 2048,
 			  pScrn->display->virtualX,
 			  pScrn->display->virtualY,
 			  pVesa->mapSize, LOOKUP_BEST_REFRESH);
+
+    if (i <= 0) {
+	DisplayModePtr mode;
+	xf86DrvMsg(pScrn->scrnIndex, X_WARNING,
+		"No valid modes left.  Trying less strict filter...\n");
+	for (mode = pScrn->monitor->Modes; mode; mode = mode->next)
+	    mode->status = MODE_OK;
+	pVesa->strict_validation = FALSE;
+	i = VBEValidateModes(pScrn, NULL, pScrn->display->modes, 
+		NULL, NULL, 0, 2048, 1, 0, 2048,
+		pScrn->display->virtualX,
+		pScrn->display->virtualY,
+		pVesa->mapSize, LOOKUP_BEST_REFRESH);
+    }
 
     if (i <= 0) {
 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "No valid modes\n");
@@ -627,7 +759,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 			     FALSE))
 	pVesa->ModeSetClearScreen = TRUE;
 
-    if (!pVesa->defaultRefresh)
+    if (!pVesa->defaultRefresh && !pVesa->strict_validation)
 	VBESetModeParameters(pScrn, pVesa->pVbe);
 
     mode = ((VbeModeInfoData*)pScrn->modes->Private)->data;
