@@ -28,7 +28,6 @@
  * Authors: Paulo César Pereira de Andrade <pcpa@conectiva.com.br>
  *          David Dawes <dawes@xfree86.org>
  *
- * $XFree86: xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.c,v 1.40 2003/11/03 05:11:45 tsi Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -173,57 +172,7 @@ static const OptionInfoRec VESAOptions[] = {
     { -1,		   NULL,		OPTV_NONE,	{0},	FALSE }
 };
 
-/*
- * List of symbols from other modules that this module references.  This
- * list is used to tell the loader that it is OK for symbols here to be
- * unresolved providing that it hasn't been told that they haven't been
- * told that they are essential via a call to xf86LoaderReqSymbols() or
- * xf86LoaderReqSymLists().  The purpose is this is to avoid warnings about
- * unresolved symbols that are not required.
- */
-static const char *fbSymbols[] = {
-    "fbPictureInit",
-    "fbScreenInit",
-    NULL
-};
-
-static const char *shadowSymbols[] = {
-    "shadowInit",
-    "shadowUpdatePackedWeak",
-    "shadowUpdatePlanar4Weak",
-    "shadowUpdatePlanar4x8Weak",
-    NULL
-};
-
-static const char *vbeSymbols[] = {
-    "VBEBankSwitch",
-    "VBEExtendedInit",
-    "VBEFindSupportedDepths",
-    "VBEGetModeInfo",
-    "VBEGetVBEInfo",
-    "VBEGetVBEMode",
-    "VBEPrintModes",
-    "VBESaveRestore",
-    "VBESetDisplayStart",
-    "VBESetGetDACPaletteFormat",
-    "VBESetGetLogicalScanlineLength",
-    "VBESetGetPaletteData",
-    "VBESetModeNames",
-    "VBESetModeParameters",
-    "VBESetVBEMode",
-    "VBEValidateModes",
-    "vbeDoEDID",
-    "vbeFree",
-    NULL
-};
-
 #ifdef XFree86LOADER
-static const char *ddcSymbols[] = {
-    "xf86PrintEDID",
-    "xf86SetDDCproperties",
-    NULL
-};
-
 
 /* Module loader interface */
 static MODULESETUPPROTO(vesaSetup);
@@ -257,11 +206,6 @@ vesaSetup(pointer Module, pointer Options, int *ErrorMajor, int *ErrorMinor)
     {
 	Initialised = TRUE;
 	xf86AddDriver(&VESA, Module, 1);
-	LoaderRefSymLists(fbSymbols,
-			  shadowSymbols,
-			  vbeSymbols,
-			  ddcSymbols,
-			  NULL);
 	return (pointer)TRUE;
     }
 
@@ -489,8 +433,6 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     VbeInfoBlock *vbe;
     DisplayModePtr pMode;
     VbeModeInfoBlock *mode;
-    char *mod = NULL;
-    const char *reqSym = NULL;
     Gamma gzeros = {0.0, 0.0, 0.0};
     rgb rzeros = {0, 0, 0};
     pointer pDDCModule;
@@ -507,19 +449,9 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     pVesa->device = xf86GetDevFromEntity(pScrn->entityList[0],
 					 pScrn->entityInstanceList[0]);
 
-#if 0
-    /* Load vgahw module */
-    if (!xf86LoadSubModule(pScrn, "vgahw"))
-    	return (FALSE);
-
-    xf86LoaderReqSymLists(vgahwSymbols, NULL);
-#endif
-
     /* Load vbe module */
     if (!xf86LoadSubModule(pScrn, "vbe"))
         return (FALSE);
-
-    xf86LoaderReqSymLists(vbeSymbols, NULL);
 
     if ((pVesa->pVbe = VBEExtendedInit(NULL, pVesa->pEnt->index,
 				       SET_BIOS_SCRATCH
@@ -712,7 +644,6 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 	    break;
 	case 0x4:	/* Packed pixel */
 	case 0x6:	/*  Direct Color */
-	    mod = "fb";
 	    pScrn->bitmapBitOrder = BITMAP_BIT_ORDER; 
 
 	    switch (pScrn->bitsPerPixel) {
@@ -736,21 +667,12 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 	    vbeFree(pVesa->pVbe);
 	    return (FALSE);
 	}
-	xf86LoaderReqSymLists(shadowSymbols, NULL);
     }
 
-    if (mod && xf86LoadSubModule(pScrn, mod) == NULL) {
+    if (xf86LoadSubModule(pScrn, "fb") == NULL) {
 	VESAFreeRec(pScrn);
         vbeFree(pVesa->pVbe);
 	return (FALSE);
-    }
-
-    if (mod) {
-	if (reqSym) {
-	    xf86LoaderReqSymbols(reqSym, NULL);
-	} else {
-	    xf86LoaderReqSymLists(fbSymbols, NULL);
-	}
     }
 
     vbeFree(pVesa->pVbe);
