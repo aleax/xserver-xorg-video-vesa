@@ -764,17 +764,8 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 
     mode = ((VbeModeInfoData*)pScrn->modes->Private)->data;
     switch (mode->MemoryModel) {
-	case 0x0:	/* Text mode */
-	case 0x1:	/* CGA graphics */
-	case 0x2:	/* Hercules graphics */
-	case 0x3:	/* Planar */
-	case 0x5:	/* Non-chain 4, 256 color */
-	case 0x7:	/* YUV */
-	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
-		       "Unsupported Memory Model: %d", mode->MemoryModel);
-	    break;
 	case 0x4:	/* Packed pixel */
-	case 0x6:	/*  Direct Color */
+	case 0x6:	/* Direct Color */
 	    pScrn->bitmapBitOrder = BITMAP_BIT_ORDER; 
 
 	    switch (pScrn->bitsPerPixel) {
@@ -790,6 +781,10 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 		    return FALSE;
 	    }
 	    break;
+	default:
+	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
+		       "Unsupported Memory Model: %d", mode->MemoryModel);
+	    return FALSE;
     }
 
     if (pVesa->shadowFB) {
@@ -925,17 +920,8 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 
     mode = ((VbeModeInfoData*)pScrn->modes->Private)->data;
     switch (mode->MemoryModel) {
-	case 0x0:	/* Text mode */
-	case 0x1:	/* CGA graphics */
-	case 0x2:	/* Hercules graphics */
-	case 0x3:	/* Planar */
-	case 0x5:	/* Non-chain 4, 256 color */
-	case 0x7:	/* YUV */
-	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
-		       "Unsupported Memory Model: %d", mode->MemoryModel);
-	    return (FALSE);
 	case 0x4:	/* Packed pixel */
-	case 0x6:	/*  Direct Color */
+	case 0x6:	/* Direct Color */
 	    switch (pScrn->bitsPerPixel) {
 		case 8:
 		case 16:
@@ -955,6 +941,10 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 		    return (FALSE);
 	    }
 	    break;
+	default:
+	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
+		       "Unsupported Memory Model: %d", mode->MemoryModel);
+	    return (FALSE);
     }
 
 
