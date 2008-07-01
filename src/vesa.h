@@ -69,17 +69,9 @@
 #include "xf86Resources.h"
 #include "xf86RAC.h"
 
-#include "xf1bpp.h"
-#include "xf4bpp.h"
 #include "fb.h"
 
-#ifdef USE_AFB
-#include "afb.h"
-#endif
-
-#include "mfb.h"
-
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
 #include <pciaccess.h>
 #endif
 
@@ -98,8 +90,7 @@ typedef struct _VESARec
     EntityInfoPtr pEnt;
     CARD16 major, minor;
     VbeInfoBlock *vbeInfo;
-    GDevPtr device;
-#ifdef PCIACCESS
+#ifdef XSERVER_LIBPCIACCESS
     struct pci_device *pciInfo;
 #else
     pciVideoPtr pciInfo;
@@ -116,7 +107,7 @@ typedef struct _VESARec
     CARD32 *pal, *savedPal;
     CARD8 *fonts;
     xf86MonPtr monitor;
-    Bool shadowFB;
+    Bool shadowFB, strict_validation;
     CARD32 windowAoffset;
     /* Don't override the default refresh rate. */
     Bool defaultRefresh;
@@ -125,6 +116,8 @@ typedef struct _VESARec
     int nDGAMode;
     CloseScreenProcPtr CloseScreen;
     CreateScreenResourcesProcPtr CreateScreenResources;
+    xf86EnableDisableFBAccessProc *EnableDisableFBAccess;
+    Bool accessEnabled;
     OptionInfoPtr Options;
     IOADDRESS ioBase;
     Bool ModeSetClearScreen;

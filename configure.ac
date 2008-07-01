@@ -22,7 +22,7 @@
 
 AC_PREREQ(2.57)
 AC_INIT([xf86-video-vesa],
-        1.3.0,
+        2.0.0,
         [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
         xf86-video-vesa)
 
@@ -44,9 +44,6 @@ AH_TOP([#include "xorg-server.h"])
 AC_ARG_WITH(xorg-module-dir, [  --with-xorg-module-dir=DIR ],
                              [ moduledir="$withval" ],
                              [ moduledir="$libdir/xorg/modules" ])
-AC_ARG_ENABLE(pciaccess,     AS_HELP_STRING([--enable-pciaccess],
-                             [Enable use of libpciaccess (default: disabled)]),
-			     [PCIACCESS=$enableval], [PCIACCESS=no])
 AC_SUBST(moduledir)
 
 
@@ -59,12 +56,17 @@ XORG_DRIVER_CHECK_EXT(DPMSExtension, xextproto)
 PKG_CHECK_MODULES(XORG, xorg-server >= 1.0.99.901 xproto fontsproto $REQUIRED_MODULES)
 sdkdir=$(pkg-config --variable=sdkdir xorg-server)
 
-AM_CONDITIONAL(PCIACCESS, [test "x$PCIACCESS" = xyes])
-if test "x$PCIACCESS" = xyes; then
-    AC_DEFINE(PCIACCESS, 1, [Use libpciaccess])
-    PKG_CHECK_MODULES([PCIACCESS], [pciaccess >= 0.7.0])
-    XORG_CFLAGS="$XORG_CFLAGS $PCIACCESS_CFLAGS"
+save_CFLAGS="$CFLAGS"
+CFLAGS="$XORG_CFLAGS"
+AC_CHECK_DECL(XSERVER_LIBPCIACCESS,
+              [XSERVER_LIBPCIACCESS=yes], [XSERVER_LIBPCIACCESS=no],
+              [#include "xorg-server.h"])
+CFLAGS="$save_CFLAGS"
+
+if test "x$XSERVER_LIBPCIACCESS" = xyes; then
+    PKG_CHECK_MODULES([PCIACCESS], [pciaccess >= 0.10])
 fi
+AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test "x$XSERVER_LIBPCIACCESS" = xyes)
 
 CFLAGS="$CFLAGS $XORG_CFLAGS "' -I$(top_srcdir)/src'
 INCLUDES="$XORG_INCS -I${sdkdir} "'-I$(top_srcdir)/src -I$(prefix)/include'
