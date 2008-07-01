@@ -90,7 +90,6 @@ typedef struct _VESARec
     EntityInfoPtr pEnt;
     CARD16 major, minor;
     VbeInfoBlock *vbeInfo;
-    GDevPtr device;
 #ifdef XSERVER_LIBPCIACCESS
     struct pci_device *pciInfo;
 #else

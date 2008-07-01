@@ -565,8 +565,6 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 
     pVesa = VESAGetRec(pScrn);
     pVesa->pEnt = xf86GetEntityInfo(pScrn->entityList[0]);
-    pVesa->device = xf86GetDevFromEntity(pScrn->entityList[0],
-					 pScrn->entityInstanceList[0]);
 
     /* Load vbe module */
     if (!xf86LoadSubModule(pScrn, "vbe"))
