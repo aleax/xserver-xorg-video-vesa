@@ -93,8 +93,6 @@ static void RestoreFonts(ScrnInfoPtr pScrn);
 static Bool 
 VESASaveRestore(ScrnInfoPtr pScrn, vbeSaveRestoreFunction function);
 
-static void *VESAWindowPlanar(ScreenPtr pScrn, CARD32 row, CARD32 offset,
-			      int mode, CARD32 *size, void *closure);
 static void *VESAWindowLinear(ScreenPtr pScrn, CARD32 row, CARD32 offset,
 			      int mode, CARD32 *size, void *closure);
 static void *VESAWindowWindowed(ScreenPtr pScrn, CARD32 row, CARD32 offset,
@@ -125,10 +123,12 @@ static SymTabRec VESAChipsets[] =
     {-1,		 NULL}
 };
 
+#ifndef XSERVER_LIBPCIACCESS
 static PciChipsets VESAPCIchipsets[] = {
   { CHIP_VESA_GENERIC, PCI_CHIP_VGA, RES_SHARED_VGA },
   { -1,		-1,	   RES_UNDEFINED },
 };
+#endif
 
 static IsaChipsets VESAISAchipsets[] = {
   {CHIP_VESA_GENERIC, RES_EXCLUSIVE_VGA},
@@ -1232,28 +1232,6 @@ VESAUnmapVidMem(ScrnInfoPtr pScrn)
     pVesa->base = NULL;
 }
 
-void *
-VESAWindowPlanar(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
-		 CARD32 *size, void *closure)
-{
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
-    VESAPtr pVesa = VESAGetRec(pScrn);
-    VbeModeInfoBlock *data = ((VbeModeInfoData*)(pScrn->currentMode->Private))->data;
-    int window;
-    int mask = 1 << (offset & 3);
-
-    outb(pVesa->ioBase + VGA_SEQ_INDEX, 2);
-    outb(pVesa->ioBase + VGA_SEQ_DATA, mask);
-    offset = (offset >> 2) + pVesa->maxBytesPerScanline * row;
-    window = offset / (data->WinGranularity * 1024);
-    pVesa->windowAoffset = window * data->WinGranularity * 1024;
-    VESABankSwitch(pScreen, window);
-    *size = data->WinSize * 1024 - (offset - pVesa->windowAoffset);
-
-    return (void *)((unsigned long)pVesa->base +
-		   (offset - pVesa->windowAoffset));
-}
-
 static void *
 VESAWindowLinear(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
 		 CARD32 *size, void *closure)
@@ -1392,13 +1370,6 @@ ReadGr(VESAPtr pVesa, int index)
 #define WriteCrtc(index, value)						     \
     outb(pVesa->ioBase + (VGA_IOBASE_COLOR + VGA_CRTC_INDEX_OFFSET), index); \
     outb(pVesa->ioBase + (VGA_IOBASE_COLOR + VGA_CRTC_DATA_OFFSET), value)
-
-static int
-ReadCrtc(VESAPtr pVesa, int index)
-{
-    outb(pVesa->ioBase + (VGA_IOBASE_COLOR + VGA_CRTC_INDEX_OFFSET), index);
-    return inb(pVesa->ioBase + (VGA_IOBASE_COLOR + VGA_CRTC_DATA_OFFSET));
-}
 
 static void
 SeqReset(VESAPtr pVesa, Bool start)
