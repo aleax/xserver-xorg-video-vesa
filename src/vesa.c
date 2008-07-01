@@ -286,7 +286,7 @@ VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
     ScrnInfoPtr pScrn = xf86Screens[scrn];
     VESAPtr pVesa = VESAGetRec(pScrn);
     MonPtr mon = pScrn->monitor;
-    ModeStatus ret;
+    ModeStatus ret = MODE_BAD;
     DisplayModePtr mode;
     float v;
 
