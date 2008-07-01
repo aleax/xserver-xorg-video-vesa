@@ -352,6 +352,23 @@ VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
     return ret;
 }
 
+static void
+VESAInitScrn(ScrnInfoPtr pScrn)
+{
+    pScrn->driverVersion = VESA_VERSION;
+    pScrn->driverName    = VESA_DRIVER_NAME;
+    pScrn->name		 = VESA_NAME;
+    pScrn->Probe	 = VESAProbe;
+    pScrn->PreInit       = VESAPreInit;
+    pScrn->ScreenInit    = VESAScreenInit;
+    pScrn->SwitchMode    = VESASwitchMode;
+    pScrn->ValidMode     = VESAValidMode;
+    pScrn->AdjustFrame   = VESAAdjustFrame;
+    pScrn->EnterVT       = VESAEnterVT;
+    pScrn->LeaveVT       = VESALeaveVT;
+    pScrn->FreeScreen    = VESAFreeScreen;
+}
+
 /*
  * This function is called once, at the start of the first server generation to
  * do a minimal probe for supported hardware.
@@ -369,22 +386,10 @@ VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
     if (pScrn != NULL) {
 	VESAPtr pVesa = VESAGetRec(pScrn);
 
-	pScrn->driverVersion = VESA_VERSION;
-	pScrn->driverName    = VESA_DRIVER_NAME;
-	pScrn->name	     = VESA_NAME;
-	pScrn->Probe	     = VESAProbe;
-	pScrn->PreInit       = VESAPreInit;
-	pScrn->ScreenInit    = VESAScreenInit;
-	pScrn->SwitchMode    = VESASwitchMode;
-	pScrn->ValidMode     = VESAValidMode;
-	pScrn->AdjustFrame   = VESAAdjustFrame;
-	pScrn->EnterVT       = VESAEnterVT;
-	pScrn->LeaveVT       = VESALeaveVT;
-	pScrn->FreeScreen    = VESAFreeScreen;
-	
+	VESAInitScrn(pScrn);
 	pVesa->pciInfo = dev;
     }
-    
+
     return (pScrn != NULL);
 }
 #endif
@@ -423,18 +428,7 @@ VESAProbe(DriverPtr drv, int flags)
 		    if ((pScrn = xf86ConfigPciEntity(pScrn,0,usedChips[i],
 						     VESAPCIchipsets,NULL,
 						     NULL,NULL,NULL,NULL))) {
-			pScrn->driverVersion = VESA_VERSION;
-			pScrn->driverName    = VESA_DRIVER_NAME;
-			pScrn->name	     = VESA_NAME;
-			pScrn->Probe	     = VESAProbe;
-			pScrn->PreInit       = VESAPreInit;
-			pScrn->ScreenInit    = VESAScreenInit;
-			pScrn->SwitchMode    = VESASwitchMode;
-			pScrn->ValidMode     = VESAValidMode;
-			pScrn->AdjustFrame   = VESAAdjustFrame;
-			pScrn->EnterVT       = VESAEnterVT;
-			pScrn->LeaveVT       = VESALeaveVT;
-			pScrn->FreeScreen    = VESAFreeScreen;
+			VESAInitScrn(pScrn);
 			foundScreen = TRUE;
 		    }
 		}
@@ -457,19 +451,7 @@ VESAProbe(DriverPtr drv, int flags)
 	    if ((pScrn = xf86ConfigIsaEntity(pScrn, 0,usedChips[i],
 					     VESAISAchipsets, NULL,
 					     NULL, NULL, NULL, NULL))) {
-	    
-		pScrn->driverVersion = VESA_VERSION;
-		pScrn->driverName    = VESA_DRIVER_NAME;
-		pScrn->name	     = VESA_NAME;
-		pScrn->Probe	     = VESAProbe;
-		pScrn->PreInit       = VESAPreInit;
-		pScrn->ScreenInit    = VESAScreenInit;
-		pScrn->SwitchMode    = VESASwitchMode;
-		pScrn->ValidMode     = VESAValidMode;
-		pScrn->AdjustFrame   = VESAAdjustFrame;
-		pScrn->EnterVT       = VESAEnterVT;
-		pScrn->LeaveVT       = VESALeaveVT;
-		pScrn->FreeScreen    = VESAFreeScreen;
+		VESAInitScrn(pScrn);
 		foundScreen = TRUE;
 	    }
 	}
