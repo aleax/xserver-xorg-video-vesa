@@ -1,4 +1,4 @@
-xserver-xorg-video-vesa (1:2.0.0-1) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.0.0-1) unstable; urgency=low
 
   * New upstream release.
   * Add upstream URL to debian/copyright.
@@ -9,7 +9,7 @@ xserver-xorg-video-vesa (1:2.0.0-1) UNRELEASED; urgency=low
     dpkg-shlibdeps to shut up about symbols it can't find.
     + Build-depend on dpkg-dev >= 1.14.17 for dpkg-shlibdeps --warnings.
 
- -- Brice Goglin <bgoglin@debian.org>  Tue, 01 Jul 2008 21:10:19 +0200
+ -- Brice Goglin <bgoglin@debian.org>  Tue, 01 Jul 2008 21:12:25 +0200
 
 xserver-xorg-video-vesa (1:1.3.0-4) unstable; urgency=low
 
