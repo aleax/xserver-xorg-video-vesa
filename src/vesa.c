@@ -31,6 +31,14 @@
  *          Adam Jackson <ajax@redhat.com>
  */
 
+/*
+ * TODO:
+ * - PanelID might give us useful size hints.
+ * - Port to RANDR 1.2 setup to make mode selection slightly better
+ * - Port to RANDR 1.2 to drop the old-school DGA junk
+ * - VBE/SCI for secondary DDC method?
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
