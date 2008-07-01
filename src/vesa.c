@@ -1656,44 +1656,12 @@ VESADisplayPowerManagementSet(ScrnInfoPtr pScrn, int mode,
                 int flags)
 {
     VESAPtr pVesa = VESAGetRec(pScrn);
-    unsigned char seq1 = 0, crtc17 = 0;
 
     if (!pScrn->vtSema)
 	return;
 
-    switch (mode) {
-	case DPMSModeOn:
-	    /* Screen: On; HSync: On, VSync: On */
-	    seq1 = 0x00;
-	    crtc17 = 0x80;
-	    break;
-	case DPMSModeStandby:
-	    /* Screen: Off; HSync: Off, VSync: On -- Not Supported */
-	    seq1 = 0x20;
-	    crtc17 = 0x80;
-	    break;
-	case DPMSModeSuspend:
-	    /* Screen: Off; HSync: On, VSync: Off -- Not Supported */
-	    seq1 = 0x20;
-	    crtc17 = 0x80;
-	    break;
-	case DPMSModeOff:
-	    /* Screen: Off; HSync: Off, VSync: Off */
-	    seq1 = 0x20;
-	    crtc17 = 0x00;
-	    break;
-    }
-    WriteSeq(0x00, 0x01);		  /* Synchronous Reset */
-    seq1 |= ReadSeq(pVesa, 0x01) & ~0x20;
-    WriteSeq(0x01, seq1);
-    crtc17 |= ReadCrtc(pVesa, 0x17) & ~0x80;
-    usleep(10000);
-    WriteCrtc(0x17, crtc17);
-    WriteSeq(0x00, 0x03);		  /* End Reset */
+    VBEDPMSSet(pVesa->pVbe, mode);
 }
-
-
-
 
 /***********************************************************************
  * DGA stuff
