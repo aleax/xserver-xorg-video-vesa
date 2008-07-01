@@ -1,3 +1,151 @@
+commit 3631892e0c53568b9f6b0c4aeacd2354305376e6
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 13:41:07 2008 -0400
+
+    vesa 2.0.0
+
+commit eb4216dbb392a78d15cde8232d4d951ad876518e
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 13:40:16 2008 -0400
+
+    Un-duplicate some init code.
+
+commit 8ec1f02475bc4267050239c6840fa6738b0caefb
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 13:23:31 2008 -0400
+
+    Remove unused ->device
+
+commit 1f1e72fd965443e61ec10442044f554afd77db36
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 15:22:14 2008 -0400
+
+    vesa 1.99.1
+
+commit 419b7d46f2abab5506c89f3b2b3e7a50a5dbf3a7
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 14:30:51 2008 -0400
+
+    Update copyright.
+
+commit f807c82506f42c1e1fa63cfa56d7c79b653e46f8
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 14:19:12 2008 -0400
+
+    Clean up memory model checking, and properly refuse unsupported models.
+
+commit 99d2cc8676a93ec21f5ca1cec3525a8dff8a6acd
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 14:16:52 2008 -0400
+
+    Add semi-reasonable mode validation.
+
+commit 1a256385169d61c6f42cb6f6d0eb1688570fd79e
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 12:06:04 2008 -0400
+
+    Prefer a more modern depth/bpp selection.
+    
+    24+32, then 24+24, then 16, 15, 8, 4, 1.
+    
+    See also Red Hat bugs #427383, #445566.
+
+commit 2760e3e9163768aea85d188ae23b7d9e4e89944b
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 11:31:00 2008 -0400
+
+    Remove some useless module loading cruft.
+
+commit 6ac8eca0063576a64827ca74dfe78ac1a1e53188
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Jun 12 11:18:07 2008 -0400
+
+    Fix boolean inversion in VBE screen clear.
+    
+    From the VESA VBE doc: "If bit D15 is not set, all reported image pages,
+    based on Function 00h returned information NumberOfImagePages, will be
+    cleared to 00h in graphics mode, and 20 07 in text mode. Memory over and
+    above the reported image pages will not be changed. If bit D15 is set,
+    then the contents of the frame buffer after the mode change is undefined."
+    
+    D15 here means the high bit of %bx.
+
+commit f8a2b6470406415e96b5d03afa2129acd33b1d91
+Author: Julien Cristau <jcristau@debian.org>
+Date:   Thu Apr 17 01:36:48 2008 +0200
+
+    Planar video is gone
+    
+    xf1bpp and xf4bpp were removed from the server, so
+    don't try to use them.  The afb code was disabled
+    for years and nobody noticed, remove that too.
+
+commit 837e6382cfb54fdfe65355e2b0c21b2949cebc32
+Author: Matthieu Herrb <matthieu.herrb@laas.fr>
+Date:   Sun Mar 9 00:05:06 2008 +0100
+
+    Makefile.am: nuke RCS Id
+
+commit f374ef206a31c0208072bcd12386860429e78f40
+Author: Julien Cristau <jcristau@debian.org>
+Date:   Fri Mar 7 17:12:52 2008 +0100
+
+    fixup pciaccess version detect
+
+commit 89d1940bc2aa05e20527bb11224fd3ce0156a593
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Fri Feb 29 17:05:09 2008 -0500
+
+    Bug #10004: Fix palette initialization in 8bpp modes.
+    
+    MemoryModel is an enum, not a bitfield; use == not & for the test.
+
+commit 8e8efd5de2b3f5985b6df814392e6eecff2f97a3
+Author: Daniel Drake <ddrake@brontes3d.com>
+Date:   Tue May 29 12:17:00 2007 -0800
+
+    Bug #11090: xf86-video-vesa COPYING file
+    
+    X.Org Bugzilla #11090 <https://bugs.freedesktop.org/show_bug.cgi?id=11090>
+
+commit d6908078506fe2e47fe1293d717d1c99deb8038a
+Author: Ian Romanick <idr@us.ibm.com>
+Date:   Tue Sep 4 16:38:37 2007 -0700
+
+    Use pci_device_map_range instead of pci_device_map_memory_range
+
+commit e1bd1a12455497608aa5a071a071b1b0fb0c9ce2
+Author: Ian Romanick <idr@us.ibm.com>
+Date:   Tue Sep 4 16:33:09 2007 -0700
+
+    Use XSERVER_LIBPCIACCESS to autodetect libpciaccess usage.
+
+commit d4e58d9b8dc9dd97a2f3a4c16e27ecce72bf19e1
+Author: James Cloos <cloos@jhcloos.com>
+Date:   Mon Sep 3 05:52:49 2007 -0400
+
+    Add *~ to .gitignore to skip patch/emacs droppings
+
+commit 07a1bb0ed32ab10abce160e6b506614564c54f49
+Author: James Cloos <cloos@jhcloos.com>
+Date:   Thu Aug 23 19:26:01 2007 -0400
+
+    Rename .cvsignore to .gitignore
+
+commit f5315667c0d827cca56a0a855b33e0efe83e3fa0
+Author: Aaron Plattner <aplattner@nvidia.com>
+Date:   Fri May 11 15:06:50 2007 -0700
+
+    Don't disable FB access when it's already disabled.
+    
+    Fixes a server segfault during xrandr resize.
+
+commit 5133cd1063e4cebbec9e7bcc85917f328ffe52f4
+Author: Adam Jackson <ajax@benzedrine.nwnk.net>
+Date:   Thu Mar 1 17:42:06 2007 -0500
+
+    Remove all trace of mfb
+
 commit 9bbe1c49b9d22736eded05909e144cc6e03050b4
 Author: Ian Romanick <idr@us.ibm.com>
 Date:   Mon Jan 15 17:31:18 2007 -0800
