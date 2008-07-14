@@ -1,8 +1,9 @@
-xserver-xorg-video-vesa (1:2.0.0-2) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.0.0-2) experimental; urgency=low
 
   * Add myself to Uploaders, and remove Branden with his permission.
+  * Build against xserver 1.5 rc5.
 
- -- Julien Cristau <jcristau@debian.org>  Mon, 14 Jul 2008 14:49:03 +0200
+ -- Julien Cristau <jcristau@debian.org>  Mon, 14 Jul 2008 14:51:43 +0200
 
 xserver-xorg-video-vesa (1:2.0.0-1) unstable; urgency=low
 
