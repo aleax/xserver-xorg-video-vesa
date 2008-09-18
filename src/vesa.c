@@ -1099,6 +1099,10 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
 
     data = (VbeModeInfoData*)pMode->Private;
 
+    xf86DrvMsg(pScrn->scrnIndex, X_INFO,
+	       "Setting up VESA Mode 0x%X (%dx%d)\n",
+	       data->mode & 0x7FF, pMode->HDisplay, pMode->VDisplay);
+
     /* careful, setting the bit means don't clear the screen */
     mode = data->mode | (pVesa->ModeSetClearScreen ? 0 : (1U << 15));
 
