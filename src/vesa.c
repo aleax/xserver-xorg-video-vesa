@@ -138,10 +138,12 @@ static PciChipsets VESAPCIchipsets[] = {
 };
 #endif
 
+#ifdef HAVE_ISA
 static IsaChipsets VESAISAchipsets[] = {
   {CHIP_VESA_GENERIC, RES_EXCLUSIVE_VGA},
   {-1,		0 }
 };
+#endif
 
 
 /* 
@@ -446,6 +448,7 @@ VESAProbe(DriverPtr drv, int flags)
     }
 #endif
 
+#ifdef HAVE_ISA
     /* Isa Bus */
     numUsed = xf86MatchIsaInstances(VESA_NAME,VESAChipsets,
 				    VESAISAchipsets, drv,
@@ -465,12 +468,14 @@ VESAProbe(DriverPtr drv, int flags)
 	}
 	xfree(usedChips);
     }
+#endif
 
     xfree(devSections);
 
     return (foundScreen);
 }
 
+#ifdef HAVE_ISA
 static int
 VESAFindIsaDevice(GDevPtr dev)
 {
@@ -495,6 +500,7 @@ VESAFindIsaDevice(GDevPtr dev)
 #endif
     return (int)CHIP_VESA_GENERIC;
 }
+#endif
 
 static void
 VESAFreeRec(ScrnInfoPtr pScrn)
