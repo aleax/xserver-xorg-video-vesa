@@ -1,3 +1,9 @@
+xserver-xorg-video-vesa (1:2.1.0-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Julien Cristau <jcristau@debian.org>  Fri, 09 Jan 2009 03:56:22 +0100
+
 xserver-xorg-video-vesa (1:2.0.0-2) experimental; urgency=low
 
   * Add myself to Uploaders, and remove Branden with his permission.

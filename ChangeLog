@@ -1,3 +1,54 @@
+commit c7f6d282ccbe1931f5ae6472cbfb4f80fc749525
+Author: Dave Airlie <airlied@redhat.com>
+Date:   Mon Dec 22 12:36:21 2008 +1000
+
+    vesa 2.1.0
+
+commit d994a9abbda582ccd6d38447ca2201de10cc36a5
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Sun Nov 23 17:28:33 2008 -0500
+
+    Make ISA support optional.
+
+commit 38431c99ccb625d0fd784f86f6a8a9cdbfbf872e
+Author: Luc Verhaegen <lverhaegen@ridcully.suse.de>
+Date:   Thu Sep 18 16:58:59 2008 +0200
+
+    VESASetMode: be verbose about the mode that's being set.
+
+commit e670b3e4a1102a36a01edf1fd38676b9b13fb957
+Author: Julien Cristau <jcristau@debian.org>
+Date:   Tue Jul 15 00:26:12 2008 +0200
+
+    Properly define the driver version
+    
+    Define VESA_VERSION_MAJOR/MINOR/PATCHLEVEL using the version from
+    configure.ac.
+
+commit 4939ada882feeafe4b2f233a4a27d6ad38d5bf99
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 14:27:48 2008 -0400
+
+    Default VESAValidMode to returning MODE_BAD.
+
+commit 9d27e31dca8e0bddbf82ef2f19064160cff3a59e
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 14:19:04 2008 -0400
+
+    Add a TODO list.
+
+commit bcf3514b99431b6935ea568b59d94f266ccd7aeb
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 14:09:00 2008 -0400
+
+    Warning cleanup.
+
+commit ea57dcf423ebc3cb24060eebfc1943703448c320
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Jul 1 14:07:15 2008 -0400
+
+    Use VBE services for DPMS instead of banging VGA registers manually.
+
 commit 3631892e0c53568b9f6b0c4aeacd2354305376e6
 Author: Adam Jackson <ajax@redhat.com>
 Date:   Tue Jul 1 13:41:07 2008 -0400
