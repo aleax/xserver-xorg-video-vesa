@@ -1,4 +1,4 @@
-xserver-xorg-video-vesa (1:2.1.0-1) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.1.0-1) experimental; urgency=low
 
   * New upstream release.
   * Allow parallel builds.
@@ -6,7 +6,7 @@ xserver-xorg-video-vesa (1:2.1.0-1) UNRELEASED; urgency=low
     xutils-dev.
   * Build against xserver 1.6 rc1.
 
- -- Julien Cristau <jcristau@debian.org>  Fri, 09 Jan 2009 03:56:22 +0100
+ -- Julien Cristau <jcristau@debian.org>  Mon, 26 Jan 2009 00:29:34 +0100
 
 xserver-xorg-video-vesa (1:2.0.0-2) experimental; urgency=low
 
