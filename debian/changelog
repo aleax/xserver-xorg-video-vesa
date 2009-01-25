@@ -4,6 +4,7 @@ xserver-xorg-video-vesa (1:2.1.0-1) UNRELEASED; urgency=low
   * Allow parallel builds.
   * Run autoreconf on build; add build-deps on automake, libtool and
     xutils-dev.
+  * Build against xserver 1.6 rc1.
 
  -- Julien Cristau <jcristau@debian.org>  Fri, 09 Jan 2009 03:56:22 +0100
 
