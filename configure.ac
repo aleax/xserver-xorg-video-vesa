@@ -66,6 +66,14 @@ CFLAGS="$save_CFLAGS"
 
 save_CFLAGS="$CFLAGS"
 CFLAGS="$XORG_CFLAGS"
+AC_CHECK_DECL(VBEReadPanelID,
+	      [AC_DEFINE(HAVE_PANELID, 1, [Have VBE PanelID call])],
+	      [],
+	      [#include "vbe.h"])
+CFLAGS="$save_CFLAGS"
+
+save_CFLAGS="$CFLAGS"
+CFLAGS="$XORG_CFLAGS"
 AC_CHECK_DECL(XSERVER_LIBPCIACCESS,
               [XSERVER_LIBPCIACCESS=yes], [XSERVER_LIBPCIACCESS=no],
               [#include "xorg-server.h"])
