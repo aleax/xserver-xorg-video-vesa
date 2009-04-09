@@ -1,8 +1,9 @@
-xserver-xorg-video-vesa (1:2.2.0-1) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.2.0-1) unstable; urgency=low
 
   * New upstream release.
+  * Upload to unstable.
 
- -- Julien Cristau <jcristau@debian.org>  Thu, 09 Apr 2009 13:18:30 +0100
+ -- Julien Cristau <jcristau@debian.org>  Thu, 09 Apr 2009 13:20:03 +0100
 
 xserver-xorg-video-vesa (1:2.1.0-1) experimental; urgency=low
 
