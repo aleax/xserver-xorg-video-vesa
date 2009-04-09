@@ -1,3 +1,32 @@
+commit 68ca3d10ab33ee2347928b0340198aff4f620144
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Tue Feb 17 18:04:29 2009 -0500
+
+    vesa 2.2.0
+
+commit 817fb65fc3a95d6c34952f241c92ba2d3760968e
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Feb 5 16:09:32 2009 -0500
+
+    Add yet another pass to mode validation.
+    
+    Now it's: exact intersection, range based, optimistic range based.  The
+    final pass tries to stretch out the bottom of the sync ranges to fit
+    down to 640x480.  We'll skip the last pass if the sync range is already
+    that optimistic though.
+
+commit 5522f06c2305d52b12d6934133f46f7b7927ebf7
+Author: Alan Coopersmith <alan.coopersmith@sun.com>
+Date:   Fri Jan 30 21:06:38 2009 -0800
+
+    Add README with pointers to mailing list, bugzilla & git repos
+
+commit 566270b780a3f68b02d39f913372dc558ac931f2
+Author: Alan Coopersmith <alan.coopersmith@sun.com>
+Date:   Fri Jan 9 16:38:18 2009 -0800
+
+    Remove xorgconfig & xorgcfg from See Also list in man page
+
 commit c7f6d282ccbe1931f5ae6472cbfb4f80fc749525
 Author: Dave Airlie <airlied@redhat.com>
 Date:   Mon Dec 22 12:36:21 2008 +1000
