@@ -536,6 +536,22 @@ VESAFreeRec(ScrnInfoPtr pScrn)
     pScrn->driverPrivate = NULL;
 }
 
+static int
+VESAValidateModes(ScrnInfoPtr pScrn)
+{
+    VESAPtr pVesa = VESAGetRec(pScrn);
+    DisplayModePtr mode;
+
+    for (mode = pScrn->monitor->Modes; mode; mode = mode->next)
+	mode->status = MODE_OK;
+
+    return VBEValidateModes(pScrn, NULL, pScrn->display->modes, 
+			    NULL, NULL, 0, 2048, 1, 0, 2048,
+			    pScrn->display->virtualX,
+			    pScrn->display->virtualY,
+			    pVesa->mapSize, LOOKUP_BEST_REFRESH);
+}
+
 /*
  * This function is called once for each screen at the start of the first
  * server generation to initialise the screen for all server generations.
@@ -682,27 +698,37 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     VBESetModeNames(pScrn->modePool);
 
     pVesa->strict_validation = TRUE;
-    i = VBEValidateModes(pScrn, NULL, pScrn->display->modes, 
-			  NULL, NULL, 0, 2048, 1, 0, 2048,
-			  pScrn->display->virtualX,
-			  pScrn->display->virtualY,
-			  pVesa->mapSize, LOOKUP_BEST_REFRESH);
+    i = VESAValidateModes(pScrn);
 
     if (i <= 0) {
-	DisplayModePtr mode;
 	xf86DrvMsg(pScrn->scrnIndex, X_WARNING,
-		"No valid modes left.  Trying less strict filter...\n");
-	for (mode = pScrn->monitor->Modes; mode; mode = mode->next)
-	    mode->status = MODE_OK;
+		"No valid modes left. Trying less strict filter...\n");
 	pVesa->strict_validation = FALSE;
-	i = VBEValidateModes(pScrn, NULL, pScrn->display->modes, 
-		NULL, NULL, 0, 2048, 1, 0, 2048,
-		pScrn->display->virtualX,
-		pScrn->display->virtualY,
-		pVesa->mapSize, LOOKUP_BEST_REFRESH);
+	i = VESAValidateModes(pScrn);
     }
 
+    if (i <= 0) do {
+	Bool changed = FALSE;
+	/* maybe there's more modes at the bottom... */
+	if (pScrn->monitor->vrefresh[0].lo > 50) {
+	    changed = TRUE;
+	    pScrn->monitor->vrefresh[0].lo = 50;
+	}
+	if (pScrn->monitor->hsync[0].lo > 31.5) {
+	    changed = TRUE;
+	    pScrn->monitor->hsync[0].lo = 31.5;
+	}
+
+	if (!changed)
+	    break;
+
+	xf86DrvMsg(pScrn->scrnIndex, X_WARNING,
+		   "No valid modes left. Trying aggressive sync range...\n");
+	i = VESAValidateModes(pScrn);
+    } while (0);	
+
     if (i <= 0) {
+	/* alright, i'm out of ideas */
 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "No valid modes\n");
         vbeFree(pVesa->pVbe);
 	return (FALSE);
