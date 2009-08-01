@@ -1,8 +1,9 @@
-xserver-xorg-video-vesa (1:2.2.0-2) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.2.1-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * Add README.source, bump Standards-Version to 3.8.2.
 
- -- Brice Goglin <bgoglin@debian.org>  Sat, 01 Aug 2009 09:51:46 +0200
+ -- Brice Goglin <bgoglin@debian.org>  Sat, 01 Aug 2009 09:56:12 +0200
 
 xserver-xorg-video-vesa (1:2.2.0-1) unstable; urgency=low
 

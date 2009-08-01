@@ -1,3 +1,38 @@
+commit fdf653a99f53306efcd48658caf657af48ea916d
+Author: Dave Airlie <airlied@redhat.com>
+Date:   Thu Jul 30 12:04:30 2009 +1000
+
+    vesa: bump for release 2.2.1
+
+commit 869a9c8058c16734af5c8771a0c32df0be7bba36
+Author: Dave Airlie <airlied@redhat.com>
+Date:   Tue Jul 28 15:22:42 2009 +1000
+
+    vesa: change to using ABI version check
+
+commit aad538f06852e5bf011597a574785d525ed1b0c4
+Author: Dave Airlie <airlied@redhat.com>
+Date:   Tue Jul 28 13:32:40 2009 +1000
+
+    vesa: update for resources/RAC API removal
+
+commit 49f6a2f902473692f6541ee32e018b64d74e7ece
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Thu Jul 16 11:58:39 2009 +1000
+
+    Update to xextproto 7.1 support.
+    
+    DPMS header was split into dpms.h (client) and dpmsconst.h (server). Drivers
+    need to include dpmsconst.h if xextproto 7.1 is available.
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 69b3eb4f8a9b93f1b2a73e395d4d7c29c6c18b41
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Feb 26 14:33:52 2009 -0500
+
+    Attempt VBE PanelID if DDC fails
+
 commit 68ca3d10ab33ee2347928b0340198aff4f620144
 Author: Adam Jackson <ajax@redhat.com>
 Date:   Tue Feb 17 18:04:29 2009 -0500
