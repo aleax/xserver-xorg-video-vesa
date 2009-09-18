@@ -873,7 +873,6 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
     VisualPtr visual;
     VbeModeInfoBlock *mode;
     int flags;
-    int init_picture = 0;
 
     if ((pVesa->pVbe = VBEExtendedInit(NULL, pVesa->pEnt->index,
 				       SET_BIOS_SCRATCH
@@ -965,7 +964,6 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 				       pScrn->xDpi, pScrn->yDpi,
 				       pScrn->displayWidth, pScrn->bitsPerPixel))
 			return (FALSE);
-		    init_picture = 1;
 		    break;
 		default:
 		    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
@@ -996,8 +994,7 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
     }
 
     /* must be after RGB ordering fixed */
-    if (init_picture)
-	fbPictureInit(pScreen, 0, 0);
+    fbPictureInit(pScreen, 0, 0);
 
     if (pVesa->shadowFB) {
 	if (pVesa->mapPhys == 0xa0000) {	/* Windowed */
