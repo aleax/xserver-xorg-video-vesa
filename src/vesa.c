@@ -1317,16 +1317,13 @@ VESAWindowWindowed(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
 		    (offset - pVesa->windowAoffset));
 }
 
+/* This code works, but is very slow for programs that use it intensively */
 static void
 VESALoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices,
 		LOCO *colors, VisualPtr pVisual)
 {
     VESAPtr pVesa = VESAGetRec(pScrn);
     int i, idx;
-
-#if 0
-
-    /* This code works, but is very slow for programs that use it intensively */
     int base;
 
     if (pVesa->pal == NULL)
@@ -1350,28 +1347,6 @@ VESALoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices,
     if (idx - 1 == indices[i - 1])
 	VBESetGetPaletteData(pVesa->pVbe, TRUE, base, idx - base,
 			      pVesa->pal + base, FALSE, TRUE);
-
-#else
-
-#define VESADACDelay()							    \
-    do {								    \
-	(void)inb(pVesa->ioBase + VGA_IOBASE_COLOR + VGA_IN_STAT_1_OFFSET); \
-	(void)inb(pVesa->ioBase + VGA_IOBASE_COLOR + VGA_IN_STAT_1_OFFSET); \
-    } while (0)
-
-    for (i = 0; i < numColors; i++) {
-	idx = indices[i];
-	outb(pVesa->ioBase + VGA_DAC_WRITE_ADDR, idx);
-	VESADACDelay();
-	outb(pVesa->ioBase + VGA_DAC_DATA, colors[idx].red);
-	VESADACDelay();
-	outb(pVesa->ioBase + VGA_DAC_DATA, colors[idx].green);
-	VESADACDelay();
-	outb(pVesa->ioBase + VGA_DAC_DATA, colors[idx].blue);
-	VESADACDelay();
-    }
-
-#endif
 }
 
 /*
