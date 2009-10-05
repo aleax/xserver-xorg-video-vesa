@@ -1097,8 +1097,10 @@ VESACloseScreen(int scrnIndex, ScreenPtr pScreen)
 				 pVesa->savedPal, FALSE, TRUE);
 	VESAUnmapVidMem(pScrn);
     }
-    if (pVesa->shadowFB && pVesa->shadow)
+    if (pVesa->shadowFB && pVesa->shadow) {
+	shadowRemove(pScreen, pScreen->GetScreenPixmap(pScreen));
 	xfree(pVesa->shadow);
+    }
     if (pVesa->pDGAMode) {
 	xfree(pVesa->pDGAMode);
 	pVesa->pDGAMode = NULL;
