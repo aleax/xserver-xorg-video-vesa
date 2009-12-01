@@ -550,7 +550,7 @@ VESAValidateModes(ScrnInfoPtr pScrn)
 	mode->status = MODE_OK;
 
     return VBEValidateModes(pScrn, NULL, pScrn->display->modes, 
-			    NULL, NULL, 0, 2048, 1, 0, 2048,
+			    NULL, NULL, 0, 32767, 1, 0, 32767,
 			    pScrn->display->virtualX,
 			    pScrn->display->virtualY,
 			    pVesa->mapSize, LOOKUP_BEST_REFRESH);
