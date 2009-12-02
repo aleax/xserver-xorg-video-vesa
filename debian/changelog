@@ -1,3 +1,9 @@
+xserver-xorg-video-vesa (1:2.2.1-2) UNRELEASED; urgency=low
+
+  * Bump Standards-Version to 3.8.3.
+
+ -- Timo Aaltonen <tjaalton@ubuntu.com>  Wed, 02 Dec 2009 10:19:36 +0200
+
 xserver-xorg-video-vesa (1:2.2.1-1) unstable; urgency=low
 
   * New upstream release.
