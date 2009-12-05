@@ -6,7 +6,7 @@ Uploaders: David Nusinow <dnusinow@debian.org>, Julien Cristau <jcristau@debian.
 Build-Depends:
  debhelper (>= 5.0.0),
  pkg-config,
- xserver-xorg-dev (>= 2:1.5.99.901),
+ xserver-xorg-dev (>= 2:1.7),
  x11proto-xext-dev,
  x11proto-core-dev,
  x11proto-fonts-dev,
