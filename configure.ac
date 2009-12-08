@@ -95,7 +95,7 @@ fi
 AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test "x$XSERVER_LIBPCIACCESS" = xyes)
 
 CFLAGS="$CFLAGS $XORG_CFLAGS "' -I$(top_srcdir)/src'
-INCLUDES="$XORG_INCS -I${sdkdir} "'-I$(top_srcdir)/src -I$(prefix)/include'
+INCLUDES="$XORG_INCS -I${sdkdir} "'-I$(top_srcdir)/src'
 AC_SUBST([CFLAGS])
 AC_SUBST([INCLUDES])
 
