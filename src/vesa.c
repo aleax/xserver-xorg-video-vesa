@@ -137,6 +137,12 @@ VESAWindowWindowed(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
 		    (offset - pVesa->windowAoffset));
 }
 
+static void
+vesaUpdatePacked(ScreenPtr pScreen, shadowBufPtr pBuf)
+{
+    shadowUpdatePacked(pScreen, pBuf);
+}
+
 static Bool VESADGAInit(ScrnInfoPtr pScrn, ScreenPtr pScreen);
 
 enum GenericTypes
@@ -1025,11 +1031,11 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 
     if (pVesa->shadowFB) {
 	if (pVesa->mapPhys == 0xa0000) {	/* Windowed */
-	    pVesa->update = shadowUpdatePackedWeak();
+	    pVesa->update = vesaUpdatePacked;
 	    pVesa->window = VESAWindowWindowed;
 	}
 	else {	/* Linear */
-	    pVesa->update = shadowUpdatePackedWeak();
+	    pVesa->update = vesaUpdatePacked;
 	    pVesa->window = VESAWindowLinear;
 	}
 
