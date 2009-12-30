@@ -94,7 +94,9 @@ VESADisplayPowerManagementSet(ScrnInfoPtr pScrn, int mode,
                 int flags);
 
 /* locally used functions */
+#ifdef HAVE_ISA
 static int VESAFindIsaDevice(GDevPtr dev);
+#endif
 static Bool VESAMapVidMem(ScrnInfoPtr pScrn);
 static void VESAUnmapVidMem(ScrnInfoPtr pScrn);
 static int VESABankSwitch(ScreenPtr pScreen, unsigned int iBank);
