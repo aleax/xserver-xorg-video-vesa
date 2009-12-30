@@ -105,10 +105,35 @@ static void RestoreFonts(ScrnInfoPtr pScrn);
 static Bool 
 VESASaveRestore(ScrnInfoPtr pScrn, vbeSaveRestoreFunction function);
 
-static void *VESAWindowLinear(ScreenPtr pScrn, CARD32 row, CARD32 offset,
-			      int mode, CARD32 *size, void *closure);
-static void *VESAWindowWindowed(ScreenPtr pScrn, CARD32 row, CARD32 offset,
-				int mode, CARD32 *size, void *closure);
+static void *
+VESAWindowLinear(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
+		 CARD32 *size, void *closure)
+{
+    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    VESAPtr pVesa = VESAGetRec(pScrn);
+
+    *size = pVesa->maxBytesPerScanline;
+    return ((CARD8 *)pVesa->base + row * pVesa->maxBytesPerScanline + offset);
+}
+
+static void *
+VESAWindowWindowed(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
+		   CARD32 *size, void *closure)
+{
+    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    VESAPtr pVesa = VESAGetRec(pScrn);
+    VbeModeInfoBlock *data = ((VbeModeInfoData*)(pScrn->currentMode->Private))->data;
+    int window;
+
+    offset += pVesa->maxBytesPerScanline * row;
+    window = offset / (data->WinGranularity * 1024);
+    pVesa->windowAoffset = window * data->WinGranularity * 1024;
+    VESABankSwitch(pScreen, window);
+    *size = data->WinSize * 1024 - (offset - pVesa->windowAoffset);
+
+    return (void *)((unsigned long)pVesa->base +
+		    (offset - pVesa->windowAoffset));
+}
 
 static Bool VESADGAInit(ScrnInfoPtr pScrn, ScreenPtr pScreen);
 
@@ -1284,36 +1309,6 @@ VESAUnmapVidMem(ScrnInfoPtr pScrn)
 	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->VGAbase, 0x10000);
 #endif
     pVesa->base = NULL;
-}
-
-static void *
-VESAWindowLinear(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
-		 CARD32 *size, void *closure)
-{
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
-    VESAPtr pVesa = VESAGetRec(pScrn);
-
-    *size = pVesa->maxBytesPerScanline;
-    return ((CARD8 *)pVesa->base + row * pVesa->maxBytesPerScanline + offset);
-}
-
-static void *
-VESAWindowWindowed(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
-		   CARD32 *size, void *closure)
-{
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
-    VESAPtr pVesa = VESAGetRec(pScrn);
-    VbeModeInfoBlock *data = ((VbeModeInfoData*)(pScrn->currentMode->Private))->data;
-    int window;
-
-    offset += pVesa->maxBytesPerScanline * row;
-    window = offset / (data->WinGranularity * 1024);
-    pVesa->windowAoffset = window * data->WinGranularity * 1024;
-    VESABankSwitch(pScreen, window);
-    *size = data->WinSize * 1024 - (offset - pVesa->windowAoffset);
-
-    return (void *)((unsigned long)pVesa->base +
-		    (offset - pVesa->windowAoffset));
 }
 
 /* This code works, but is very slow for programs that use it intensively */
