@@ -1045,22 +1045,9 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	pScreen->CreateScreenResources = vesaCreateScreenResources;
     }
     else if (pVesa->mapPhys == 0xa0000) {
-	unsigned int bankShift = 0;
-	while ((unsigned)(64 >> bankShift) != mode->WinGranularity)
-	    bankShift++;
-	pVesa->curBank = -1;
-	pVesa->bank.SetSourceBank =
-	pVesa->bank.SetDestinationBank =
-	pVesa->bank.SetSourceAndDestinationBanks = VESABankSwitch;
-	pVesa->bank.pBankA = pVesa->bank.pBankB = pVesa->base;
-	pVesa->bank.BankSize = (mode->WinSize * 1024) >> bankShift;
-	pVesa->bank.nBankDepth = pScrn->depth;
-	if (!miInitializeBanking(pScreen, pScrn->virtualX, pScrn->virtualY,
-				 pScrn->virtualX, &pVesa->bank)) {
-	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
-		       "Bank switch initialization failed!\n");
-	    return (FALSE);
-	}
+        xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
+                   "Banked framebuffer requires ShadowFB\n");
+        return FALSE;
     }
 
     VESADGAInit(pScrn, pScreen);
