@@ -1179,14 +1179,13 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
 	    /* Some cards do not like setting the clock.
 	     * Free it as it will not be any longer useful
 	     */
-	    xf86ErrorF("...Tried again without customized values.\n");
+	    xf86ErrorF(", mode set without customized refresh.\n");
 	    xfree(data->block);
 	    data->block = NULL;
 	    data->mode &= ~(1 << 11);
 	}
 	else {
 	    ErrorF("\n");
-	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Set VBE Mode failed!\n");
 	    return (FALSE);
 	}
     }
