@@ -1,6 +1,11 @@
 xserver-xorg-video-vesa (1:2.3.0-1) UNRELEASED; urgency=low
 
+  [ Timo Aaltonen ]
   * New upstream release.
+
+  [ Julien Cristau ]
+  * Rename the build directory to not include DEB_BUILD_GNU_TYPE for no
+    good reason.  Thanks, Colin Watson!
 
  -- Timo Aaltonen <tjaalton@ubuntu.com>  Wed, 06 Jan 2010 14:27:00 +0200
 
