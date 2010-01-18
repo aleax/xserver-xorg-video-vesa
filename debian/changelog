@@ -2,6 +2,7 @@ xserver-xorg-video-vesa (1:2.3.0-1) UNRELEASED; urgency=low
 
   [ Timo Aaltonen ]
   * New upstream release.
+    + Add missing shadowRemove() in VESACloseScreen() (closes: #565401)
 
   [ Julien Cristau ]
   * Rename the build directory to not include DEB_BUILD_GNU_TYPE for no
