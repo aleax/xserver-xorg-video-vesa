@@ -1,4 +1,4 @@
-xserver-xorg-video-vesa (1:2.3.0-1) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.3.0-1) unstable; urgency=low
 
   [ Timo Aaltonen ]
   * New upstream release.
@@ -9,7 +9,7 @@ xserver-xorg-video-vesa (1:2.3.0-1) UNRELEASED; urgency=low
     good reason.  Thanks, Colin Watson!
   * Bump build-dep on xutils-dev for new util-macros.
 
- -- Timo Aaltonen <tjaalton@ubuntu.com>  Wed, 06 Jan 2010 14:27:00 +0200
+ -- Brice Goglin <bgoglin@debian.org>  Wed, 20 Jan 2010 23:35:50 +0100
 
 xserver-xorg-video-vesa (1:2.2.1-2) unstable; urgency=low
 
