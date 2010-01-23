@@ -1,3 +1,9 @@
+xserver-xorg-video-vesa (1:2.3.0-2) UNRELEASED; urgency=low
+
+  * Remove myself from Uploaders
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 23 Jan 2010 01:42:55 +0100
+
 xserver-xorg-video-vesa (1:2.3.0-1) unstable; urgency=low
 
   [ Timo Aaltonen ]
