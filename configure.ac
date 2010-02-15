@@ -93,11 +93,6 @@ if test "x$XSERVER_LIBPCIACCESS" = xyes; then
 fi
 AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test "x$XSERVER_LIBPCIACCESS" = xyes)
 
-CFLAGS="$CFLAGS $XORG_CFLAGS "' -I$(top_srcdir)/src'
-INCLUDES="$XORG_INCS "'-I$(top_srcdir)/src'
-AC_SUBST([CFLAGS])
-AC_SUBST([INCLUDES])
-
 # Checks for libraries.
 
 # Checks for header files.
