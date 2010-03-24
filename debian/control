@@ -16,7 +16,9 @@ Build-Depends:
  automake,
  libtool,
  xutils-dev (>= 1:7.5),
- quilt
+ quilt,
+ libdrm-dev,
+ x11proto-xf86dri-dev
 Standards-Version: 3.8.4
 Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-vesa
 Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-vesa.git
