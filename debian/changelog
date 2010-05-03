@@ -8,6 +8,7 @@ xserver-xorg-video-vesa (1:2.3.0-2) UNRELEASED; urgency=low
     ${xviddriver:Depends} in Depends, and bump B-D on xserver-xorg-dev
     accordingly.
   * Add myself to Uploaders.
+  * Bump Standards-Version from 3.8.3 to 3.8.4 (no changes needed).
 
  -- Julien Cristau <jcristau@debian.org>  Sat, 23 Jan 2010 01:42:55 +0100
 
