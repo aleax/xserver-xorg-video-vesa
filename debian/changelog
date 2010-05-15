@@ -1,3 +1,10 @@
+xserver-xorg-video-vesa (1:2.3.0-3) UNRELEASED; urgency=low
+
+  * Add patch by Christopher James Halse Rogers from Ubuntu to bail in Probe
+    if kernel mode setting is enabled.
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 15 May 2010 12:55:19 +0200
+
 xserver-xorg-video-vesa (1:2.3.0-2) unstable; urgency=low
 
   [ Julien Cristau ]
