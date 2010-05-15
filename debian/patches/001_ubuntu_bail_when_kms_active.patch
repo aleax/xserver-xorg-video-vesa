@@ -15,8 +15,8 @@ Bug-Ubuntu: https://bugs.edge.launchpad.net/ubuntu/+source/xserver-xorg-video-ve
 
 Index: xserver-xorg-video-vesa/configure.ac
 ===================================================================
---- xserver-xorg-video-vesa.orig/configure.ac	2010-03-24 19:33:01.000000000 +1100
-+++ xserver-xorg-video-vesa/configure.ac	2010-03-24 20:05:36.435067870 +1100
+--- xserver-xorg-video-vesa.orig/configure.ac
++++ xserver-xorg-video-vesa/configure.ac
 @@ -93,7 +93,14 @@
  fi
  AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test "x$XSERVER_LIBPCIACCESS" = xyes)
@@ -43,8 +43,8 @@ Index: xserver-xorg-video-vesa/configure.ac
  
 Index: xserver-xorg-video-vesa/src/vesa.c
 ===================================================================
---- xserver-xorg-video-vesa.orig/src/vesa.c	2010-03-24 19:33:01.000000000 +1100
-+++ xserver-xorg-video-vesa/src/vesa.c	2010-03-24 20:04:53.113781642 +1100
+--- xserver-xorg-video-vesa.orig/src/vesa.c
++++ xserver-xorg-video-vesa/src/vesa.c
 @@ -65,6 +65,10 @@
  #include <X11/extensions/dpms.h>
  #endif
@@ -108,3 +108,15 @@ Index: xserver-xorg-video-vesa/src/vesa.c
      pScrn = xf86ConfigPciEntity(NULL, 0, entity_num, NULL, 
  				NULL, NULL, NULL, NULL, NULL);
      if (pScrn != NULL) {
+Index: xserver-xorg-video-vesa/src/Makefile.am
+===================================================================
+--- xserver-xorg-video-vesa.orig/src/Makefile.am
++++ xserver-xorg-video-vesa/src/Makefile.am
+@@ -27,6 +27,7 @@
+ vesa_drv_la_LTLIBRARIES = vesa_drv.la
+ vesa_drv_la_LDFLAGS = -module -avoid-version
+ vesa_drv_ladir = @moduledir@/drivers
++vesa_drv_la_LIBADD = @LIBDRM_LIBS@
+ 
+ vesa_drv_la_SOURCES = \
+          vesa.c \
