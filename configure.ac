@@ -98,8 +98,9 @@ AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test "x$XSERVER_LIBPCIACCESS" = xyes)
 DRIVER_NAME=vesa
 AC_SUBST([DRIVER_NAME])
 
-AC_OUTPUT([
-	Makefile
-	src/Makefile
-	man/Makefile
+AC_CONFIG_FILES([
+                Makefile
+                src/Makefile
+                man/Makefile
 ])
+AC_OUTPUT
