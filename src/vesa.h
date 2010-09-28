@@ -25,8 +25,6 @@
  * Conectiva Linux.
  *
  * Authors: Paulo César Pereira de Andrade <pcpa@conectiva.com.br>
- *
- * $XFree86: xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.h,v 1.12 2002/08/06 13:46:27 dawes Exp $
  */
 
 #ifndef _VESA_H_
