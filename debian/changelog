@@ -1,3 +1,9 @@
+xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
+
+  * Fix typos in long description.
+
+ -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 02:19:46 +0200
+
 xserver-xorg-video-vesa (1:2.3.0-4) experimental; urgency=low
 
   * Build against Xserver 1.9.1 rc1.
