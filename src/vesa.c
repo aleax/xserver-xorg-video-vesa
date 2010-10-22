@@ -281,7 +281,7 @@ static VESAPtr
 VESAGetRec(ScrnInfoPtr pScrn)
 {
     if (!pScrn->driverPrivate)
-	pScrn->driverPrivate = xcalloc(sizeof(VESARec), 1);
+	pScrn->driverPrivate = calloc(sizeof(VESARec), 1);
 
     return ((VESAPtr)pScrn->driverPrivate);
 }
@@ -296,7 +296,7 @@ VESASetModeParameters(vbeInfoPtr pVbe, DisplayModePtr vbemode,
 
     data = (VbeModeInfoData *)vbemode->Private;
 
-    data->block = xcalloc(sizeof(VbeCRTCInfoBlock), 1);
+    data->block = calloc(sizeof(VbeCRTCInfoBlock), 1);
     data->block->HorizontalTotal = ddcmode->HTotal;
     data->block->HorizontalSyncStart = ddcmode->HSyncStart;
     data->block->HorizontalSyncEnd = ddcmode->HSyncEnd;
@@ -391,7 +391,7 @@ VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
     for (v = mon->vrefresh[0].lo; v <= mon->vrefresh[0].hi; v++) {
 	mode = xf86GTFMode(p->HDisplay, p->VDisplay, v, 0, 0);
 	ret = xf86CheckModeForMonitor(mode, mon);
-	xfree(mode);
+	free(mode);
 	if (ret == MODE_OK)
 	    break;
     }
@@ -480,7 +480,7 @@ VESAProbe(DriverPtr drv, int flags)
 		    }
 		}
 	    }
-	    xfree(usedChips);
+	    free(usedChips);
 	}
     }
 #endif
@@ -503,11 +503,11 @@ VESAProbe(DriverPtr drv, int flags)
 		foundScreen = TRUE;
 	    }
 	}
-	xfree(usedChips);
+	free(usedChips);
     }
 #endif
 
-    xfree(devSections);
+    free(devSections);
 
     return (foundScreen);
 }
@@ -554,9 +554,9 @@ VESAFreeRec(ScrnInfoPtr pScrn)
 		VbeModeInfoData *data = (VbeModeInfoData*)mode->Private;
 
 		if (data->block)
-		    xfree(data->block);
+		    free(data->block);
 
-		xfree(data);
+		free(data);
 
 		mode->Private = NULL;
 	    }
@@ -564,12 +564,12 @@ VESAFreeRec(ScrnInfoPtr pScrn)
 	} while (mode && mode != pScrn->modes);
     }
 #endif
-    xfree(pVesa->monitor);
-    xfree(pVesa->vbeInfo);
-    xfree(pVesa->pal);
-    xfree(pVesa->savedPal);
-    xfree(pVesa->fonts);
-    xfree(pScrn->driverPrivate);
+    free(pVesa->monitor);
+    free(pVesa->vbeInfo);
+    free(pVesa->pal);
+    free(pVesa->savedPal);
+    free(pVesa->fonts);
+    free(pScrn->driverPrivate);
     pScrn->driverPrivate = NULL;
 }
 
@@ -712,7 +712,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     else {
 	void *panelid = VBEReadPanelID(pVesa->pVbe);
 	VBEInterpretPanelID(pScrn->scrnIndex, panelid);
-	xfree(panelid);
+	free(panelid);
     }
 #endif
 
@@ -805,7 +805,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 
     /* options */
     xf86CollectOptions(pScrn, NULL);
-    if (!(pVesa->Options = xalloc(sizeof(VESAOptions)))) {
+    if (!(pVesa->Options = malloc(sizeof(VESAOptions)))) {
         vbeFree(pVesa->pVbe);
 	return FALSE;
     }
@@ -940,7 +940,7 @@ VESAScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	pScrn->bitsPerPixel = 8;
 
     if (pVesa->shadowFB) {
-	pVesa->shadow = xcalloc(1, pScrn->displayWidth * pScrn->virtualY *
+	pVesa->shadow = calloc(1, pScrn->displayWidth * pScrn->virtualY *
 				   ((pScrn->bitsPerPixel + 7) / 8));
 	if (!pVesa->shadow) {
 	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
@@ -1119,10 +1119,10 @@ VESACloseScreen(int scrnIndex, ScreenPtr pScreen)
     }
     if (pVesa->shadowFB && pVesa->shadow) {
 	shadowRemove(pScreen, pScreen->GetScreenPixmap(pScreen));
-	xfree(pVesa->shadow);
+	free(pVesa->shadow);
     }
     if (pVesa->pDGAMode) {
-	xfree(pVesa->pDGAMode);
+	free(pVesa->pDGAMode);
 	pVesa->pDGAMode = NULL;
 	pVesa->nDGAMode = 0;
     }
@@ -1180,7 +1180,7 @@ VESASetMode(ScrnInfoPtr pScrn, DisplayModePtr pMode)
 	     * Free it as it will not be any longer useful
 	     */
 	    xf86ErrorF(", mode set without customized refresh.\n");
-	    xfree(data->block);
+	    free(data->block);
 	    data->block = NULL;
 	    data->mode &= ~(1 << 11);
 	}
@@ -1315,7 +1315,7 @@ VESALoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices,
     int base;
 
     if (pVesa->pal == NULL)
-	pVesa->pal = xcalloc(1, sizeof(CARD32) * 256);
+	pVesa->pal = calloc(1, sizeof(CARD32) * 256);
 
     for (i = 0, base = idx = indices[i]; i < numColors; i++, idx++) {
 	int j = indices[i];
@@ -1414,7 +1414,7 @@ SaveFonts(ScrnInfoPtr pScrn)
     if (attr10 & 0x01)
 	return;
 
-    pVesa->fonts = xalloc(16384);
+    pVesa->fonts = malloc(16384);
 
     /* save the registers that are needed here */
     miscOut = ReadMiscOut();
@@ -1622,7 +1622,7 @@ VESASaveRestore(ScrnInfoPtr pScrn, vbeSaveRestoreFunction function)
 		&& function == MODE_SAVE) {
 	        /* don't rely on the memory not being touched */
 	        if (pVesa->pstate == NULL)
-		    pVesa->pstate = xalloc(pVesa->stateSize);
+		    pVesa->pstate = malloc(pVesa->stateSize);
 		memcpy(pVesa->pstate, pVesa->state, pVesa->stateSize);
 	    }
 	}
@@ -1737,7 +1737,7 @@ VESADGAAddModes(ScrnInfoPtr pScrn)
     DGAModePtr pDGAMode;
 
     do {
-	pDGAMode = xrealloc(pVesa->pDGAMode,
+	pDGAMode = realloc(pVesa->pDGAMode,
 			    (pVesa->nDGAMode + 1) * sizeof(DGAModeRec));
 	if (!pDGAMode)
 	    break;
