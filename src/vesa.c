@@ -431,8 +431,14 @@ VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
     pScrn = xf86ConfigPciEntity(NULL, 0, entity_num, NULL, 
 				NULL, NULL, NULL, NULL, NULL);
     if (pScrn != NULL) {
-	VESAPtr pVesa = VESAGetRec(pScrn);
+	VESAPtr pVesa;
 
+	if (pci_device_has_kernel_driver(dev)) {
+	    ErrorF("vesa: Ignoring device with a bound kernel driver\n");
+	    return FALSE;
+	}
+
+	pVesa = VESAGetRec(pScrn);
 	VESAInitScrn(pScrn);
 	pVesa->pciInfo = dev;
     }
