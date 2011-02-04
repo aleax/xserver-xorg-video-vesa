@@ -1,3 +1,25 @@
+xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
+
+  * Fix typos in long description.
+  * Switch to dh:
+    - Use debhelper 8.
+    - Use dh-autoreconf.
+    - Bump xserver-xorg-dev build-dep for dh_xsf_substvars and xsf
+      debhelper sequence.
+  * Remove xsfbs accordingly.
+  * Update Uploaders list. Thanks, David & Brice!
+  * Remove long obsolete Replaces/Conflicts.
+  * Wrap Depends/Provides.
+  * Bump Standards-Version to 3.9.1 (no changes needed).
+
+ -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 02:19:46 +0200
+
+xserver-xorg-video-vesa (1:2.3.0-4) experimental; urgency=low
+
+  * Build against Xserver 1.9.1 rc1.
+
+ -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 00:54:34 +0200
+
 xserver-xorg-video-vesa (1:2.3.0-3) unstable; urgency=low
 
   * Add patch by Christopher James Halse Rogers from Ubuntu to bail in Probe
