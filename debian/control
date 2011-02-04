@@ -23,8 +23,12 @@ Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-vesa.gi
 
 Package: xserver-xorg-video-vesa
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${xviddriver:Depends}
-Provides: ${xviddriver:Provides}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ ${xviddriver:Depends},
+Provides:
+ ${xviddriver:Provides}
 Description: X.Org X server -- VESA display driver
  This driver for the X.Org X server (see xserver-xorg for a further description)
  uses the standard VESA interface provided on all video cards, but runs
