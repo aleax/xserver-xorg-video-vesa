@@ -6,6 +6,7 @@ xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
     - Use dh-autoreconf.
     - Bump xserver-xorg-dev build-dep for dh_xsf_substvars and xsf
       debhelper sequence.
+  * Remove xsfbs accordingly.
 
  -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 02:19:46 +0200
 
