@@ -8,6 +8,7 @@ xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
       debhelper sequence.
   * Remove xsfbs accordingly.
   * Update Uploaders list. Thanks, David & Brice!
+  * Remove long obsolete Replaces/Conflicts.
 
  -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 02:19:46 +0200
 
