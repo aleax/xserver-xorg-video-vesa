@@ -10,6 +10,7 @@ xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
   * Update Uploaders list. Thanks, David & Brice!
   * Remove long obsolete Replaces/Conflicts.
   * Wrap Depends/Provides.
+  * Bump Standards-Version to 3.9.1 (no changes needed).
 
  -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 02:19:46 +0200
 
