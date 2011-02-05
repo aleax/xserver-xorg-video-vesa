@@ -1,4 +1,4 @@
-xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.3.0-5) unstable; urgency=low
 
   * Fix typos in long description.
   * Switch to dh:
@@ -12,7 +12,7 @@ xserver-xorg-video-vesa (1:2.3.0-5) UNRELEASED; urgency=low
   * Wrap Depends/Provides.
   * Bump Standards-Version to 3.9.1 (no changes needed).
 
- -- Cyril Brulebois <kibi@debian.org>  Wed, 13 Oct 2010 02:19:46 +0200
+ -- Cyril Brulebois <kibi@debian.org>  Sat, 05 Feb 2011 14:59:35 +0100
 
 xserver-xorg-video-vesa (1:2.3.0-4) experimental; urgency=low
 
