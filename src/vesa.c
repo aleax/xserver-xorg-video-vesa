@@ -317,6 +317,30 @@ VESASetModeParameters(vbeInfoPtr pVbe, DisplayModePtr vbemode,
 				(double)(ddcmode->HTotal * ddcmode->VTotal));
 }
 
+/*
+ * Despite that VBE gives you pixel granularity for mode sizes, some BIOSes
+ * think they can only give sizes in multiples of character cells; and
+ * indeed, the reference CVT and GTF formulae only give results where
+ * (h % 8) == 0.  Whatever, let's just try to cope.  What we're looking for
+ * here is cases where the display says 1366x768 and the BIOS says 1360x768.
+ */
+static Bool
+vesaModesCloseEnough(DisplayModePtr edid, DisplayModePtr vbe)
+{
+    if (!(edid->type & M_T_DRIVER))
+	return FALSE;
+
+    /* never seen a height granularity... */
+    if (edid->VDisplay != vbe->VDisplay)
+	return FALSE;
+
+    if (edid->HDisplay >= vbe->HDisplay &&
+	(edid->HDisplay & ~7) == (vbe->HDisplay & ~7))
+	return TRUE;
+
+    return FALSE;
+}
+
 static ModeStatus
 VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
 {
@@ -358,9 +382,7 @@ VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
 	 */
 	if (pScrn->monitor->DDC) {
 	    for (mode = pScrn->monitor->Modes; mode; mode = mode->next) {
-		if (mode->type & M_T_DRIVER && 
-			mode->HDisplay == p->HDisplay &&
-			mode->VDisplay == p->VDisplay) {
+		if (vesaModesCloseEnough(mode, p)) {
 		    if (xf86CheckModeForMonitor(mode, mon) == MODE_OK) {
 			found = 1;
 			break;
