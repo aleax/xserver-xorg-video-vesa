@@ -391,6 +391,7 @@ VESAValidMode(int scrn, DisplayModePtr p, Bool flag, int pass)
     for (v = mon->vrefresh[0].lo; v <= mon->vrefresh[0].hi; v++) {
 	mode = xf86GTFMode(p->HDisplay, p->VDisplay, v, 0, 0);
 	ret = xf86CheckModeForMonitor(mode, mon);
+	free(mode->name);
 	free(mode);
 	if (ret == MODE_OK)
 	    break;
