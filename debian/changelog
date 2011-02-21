@@ -1,8 +1,8 @@
-xserver-xorg-video-vesa (1:2.3.0-5+exp1) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.3.0-5+exp1) experimental; urgency=low
 
   * Rebuild against Xserver 1.10 rc2.
 
- -- Cyril Brulebois <kibi@debian.org>  Mon, 21 Feb 2011 01:29:10 +0100
+ -- Cyril Brulebois <kibi@debian.org>  Mon, 21 Feb 2011 01:29:58 +0100
 
 xserver-xorg-video-vesa (1:2.3.0-5) unstable; urgency=low
 
