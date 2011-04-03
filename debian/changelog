@@ -2,6 +2,8 @@ xserver-xorg-video-vesa (1:2.3.0-6) UNRELEASED; urgency=low
 
   * Add udeb needed for the graphical install on non-Linux ports since
     fbdev is Linux-only (Closes: #596595).
+  * Merge from upstream master up to 0b02c68581, including:
+    - Refuse to load if there's a kernel driver bound to the device
 
  -- Cyril Brulebois <kibi@debian.org>  Mon, 04 Apr 2011 00:58:39 +0200
 
