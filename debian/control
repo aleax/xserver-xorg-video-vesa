@@ -15,8 +15,6 @@ Build-Depends:
  x11proto-render-dev,
  xutils-dev (>= 1:7.5),
  quilt,
- libdrm-dev (>= 2.4.3) [!hurd-i386],
- x11proto-xf86dri-dev,
 Standards-Version: 3.9.1
 Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-vesa
 Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-vesa.git
