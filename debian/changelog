@@ -7,6 +7,8 @@ xserver-xorg-video-vesa (1:2.3.0-6) UNRELEASED; urgency=low
   * This makes the need for the following patch go away, so remove:
     - 001_ubuntu_bail_when_kms_active.patch
   * Remove libdrm-dev and x11proto-xf86dri-dev build-dep accordingly.
+  * As a consequence, libdrm is no longer used, even if libdrm-dev is
+    present at build-time (Closes: #596594).
   * Update debian/copyright from upstream COPYING.
   * Bump xutils-dev build-dep for newer macros.
 
