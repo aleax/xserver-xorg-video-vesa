@@ -1,4 +1,4 @@
-xserver-xorg-video-vesa (1:2.3.0-5+exp3) UNRELEASED; urgency=low
+xserver-xorg-video-vesa (1:2.3.0-6) UNRELEASED; urgency=low
 
   * Add udeb needed for the graphical install on non-Linux ports since
     fbdev is Linux-only (Closes: #596595).
