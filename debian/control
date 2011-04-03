@@ -40,3 +40,16 @@ Description: X.Org X server -- VESA display driver
  <URL:http://www.X.org>
  .
  This package is built from the X.org xf86-video-vesa driver module.
+
+Package: xserver-xorg-video-vesa-udeb
+XC-Package-Type: udeb
+Section: debian-installer
+Architecture: hurd-any kfreebsd-any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ ${xviddriver:Depends},
+Provides:
+ ${xviddriver:Provides}
+Description: X.Org X server -- vesa display driver
+ This is a udeb, or a microdeb, for the debian-installer.
