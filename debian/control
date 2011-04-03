@@ -13,7 +13,7 @@ Build-Depends:
  x11proto-fonts-dev,
  x11proto-randr-dev,
  x11proto-render-dev,
- xutils-dev (>= 1:7.5),
+ xutils-dev (>= 1:7.5+4),
  quilt,
 Standards-Version: 3.9.1
 Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-vesa
