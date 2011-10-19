@@ -1260,27 +1260,28 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
     pScrn->fbOffset = pVesa->mapOff;
 
 #ifdef XSERVER_LIBPCIACCESS
-    if ((pVesa->mapPhys != 0xa0000) && (pVesa->pciInfo != NULL)) {
-	(void) pci_device_map_range(pVesa->pciInfo, pScrn->memPhysBase,
-				    pVesa->mapSize,
-				    (PCI_DEV_MAP_FLAG_WRITABLE
-				     | PCI_DEV_MAP_FLAG_WRITE_COMBINE),
-				    & pVesa->base);
-    }
-    else
-	(void) pci_device_map_legacy(pVesa->pciInfo, pScrn->memPhysBase,
-	                             pVesa->mapSize,
-	                             PCI_DEV_MAP_FLAG_WRITABLE,
-	                             & pVesa->base);
+    if (pVesa->pciInfo != NULL) {
+	if (pVesa->mapPhys != 0xa0000) {
+	    (void) pci_device_map_range(pVesa->pciInfo, pScrn->memPhysBase,
+	                                pVesa->mapSize,
+				        (PCI_DEV_MAP_FLAG_WRITABLE
+				         | PCI_DEV_MAP_FLAG_WRITE_COMBINE),
+				        & pVesa->base);
 
-    if (pVesa->base) {
-	if (pVesa->mapPhys != 0xa0000)
-	    (void) pci_device_map_legacy(pVesa->pciInfo, 0xa0000, 0x10000,
+	    if (pVesa->base)
+		(void) pci_device_map_legacy(pVesa->pciInfo, 0xa0000, 0x10000,
+		                             PCI_DEV_MAP_FLAG_WRITABLE,
+		                             & pVesa->VGAbase);
+	}
+	else {
+	    (void) pci_device_map_legacy(pVesa->pciInfo, pScrn->memPhysBase,
+	                                 pVesa->mapSize,
 	                                 PCI_DEV_MAP_FLAG_WRITABLE,
-	                                 & pVesa->VGAbase);
-	else
-	    pVesa->VGAbase = pVesa->base;
+	                                 & pVesa->base);
 
+	    if (pVesa->base)
+		pVesa->VGAbase = pVesa->base;
+	}
     }
 #else
     if (pVesa->mapPhys != 0xa0000 && pVesa->pEnt->location.type == BUS_PCI)
