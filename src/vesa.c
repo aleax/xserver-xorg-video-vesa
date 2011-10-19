@@ -1299,7 +1299,11 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
     }
 #endif
 
+#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) < 12
     pVesa->ioBase = pScrn->domainIOBase;
+#else
+    pVesa->ioBase = 0;
+#endif
 
     xf86DrvMsgVerb(pScrn->scrnIndex, X_INFO, DEBUG_VERB,
 		   "virtual address = %p,\n"
