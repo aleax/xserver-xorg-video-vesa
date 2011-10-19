@@ -1268,14 +1268,16 @@ VESAMapVidMem(ScrnInfoPtr pScrn)
 				    & pVesa->base);
     }
     else
-	pVesa->base = xf86MapDomainMemory(pScrn->scrnIndex, 0, pVesa->pciInfo,
-					  pScrn->memPhysBase, pVesa->mapSize);
+	(void) pci_device_map_legacy(pVesa->pciInfo, pScrn->memPhysBase,
+	                             pVesa->mapSize,
+	                             PCI_DEV_MAP_FLAG_WRITABLE,
+	                             & pVesa->base);
 
     if (pVesa->base) {
 	if (pVesa->mapPhys != 0xa0000)
-	    pVesa->VGAbase = xf86MapDomainMemory(pScrn->scrnIndex, 0,
-						 pVesa->pciInfo,
-						 0xa0000, 0x10000);
+	    (void) pci_device_map_legacy(pVesa->pciInfo, 0xa0000, 0x10000,
+	                                 PCI_DEV_MAP_FLAG_WRITABLE,
+	                                 & pVesa->VGAbase);
 	else
 	    pVesa->VGAbase = pVesa->base;
 
@@ -1325,10 +1327,12 @@ VESAUnmapVidMem(ScrnInfoPtr pScrn)
     if (pVesa->mapPhys != 0xa0000) {
 	(void) pci_device_unmap_range(pVesa->pciInfo, pVesa->base,
 				      pVesa->mapSize);
-	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->VGAbase, 0x10000);
+	(void) pci_device_unmap_legacy(pVesa->pciInfo, pVesa->VGAbase,
+	                               0x10000);
     }
     else {
-	xf86UnMapVidMem(pScrn->scrnIndex, pVesa->base, pVesa->mapSize);
+	(void) pci_device_unmap_legacy(pVesa->pciInfo, pVesa->base,
+	                               pVesa->mapSize);
     }
 #else
     xf86UnMapVidMem(pScrn->scrnIndex, pVesa->base, pVesa->mapSize);
