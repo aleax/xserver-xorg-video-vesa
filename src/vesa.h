@@ -114,7 +114,7 @@ typedef struct _VESARec
     xf86EnableDisableFBAccessProc *EnableDisableFBAccess;
     Bool accessEnabled;
     OptionInfoPtr Options;
-    IOADDRESS ioBase;
+    unsigned long ioBase;
     Bool ModeSetClearScreen;
     void *shadow;
     ShadowUpdateProc update;
