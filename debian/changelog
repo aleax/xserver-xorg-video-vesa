@@ -2,6 +2,7 @@ xserver-xorg-video-vesa (1:2.3.0-7+exp1) UNRELEASED; urgency=low
 
   * Merge from upstream master up to 4ba7306fd0 to make it possible
     to build against 1.12 RC1 (video ABI 12).
+  * Build against Xserver 1.12 RC1.
 
  -- Cyril Brulebois <kibi@debian.org>  Sun, 01 Jan 2012 06:56:57 +0100
 
