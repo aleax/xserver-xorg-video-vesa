@@ -111,7 +111,7 @@ static void *
 VESAWindowLinear(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
 		 CARD32 *size, void *closure)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     VESAPtr pVesa = VESAGetRec(pScrn);
 
     *size = pVesa->maxBytesPerScanline;
@@ -122,7 +122,7 @@ static void *
 VESAWindowWindowed(ScreenPtr pScreen, CARD32 row, CARD32 offset, int mode,
 		   CARD32 *size, void *closure)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     VESAPtr pVesa = VESAGetRec(pScrn);
     VbeModeInfoBlock *data = ((VbeModeInfoData*)(pScrn->currentMode->Private))->data;
     int window;
@@ -903,7 +903,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
 static Bool
 vesaCreateScreenResources(ScreenPtr pScreen)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     VESAPtr pVesa = VESAGetRec(pScrn);
     Bool ret;
 
@@ -1578,7 +1578,7 @@ RestoreFonts(ScrnInfoPtr pScrn)
 static Bool
 VESASaveScreen(ScreenPtr pScreen, int mode)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     VESAPtr pVesa = VESAGetRec(pScrn);
     Bool on = xf86IsUnblank(mode);
 
@@ -1603,7 +1603,7 @@ VESASaveScreen(ScreenPtr pScreen, int mode)
 static int 
 VESABankSwitch(ScreenPtr pScreen, unsigned int iBank)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     VESAPtr pVesa = VESAGetRec(pScrn);
 
     if (pVesa->curBank == iBank)
