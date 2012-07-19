@@ -1,6 +1,7 @@
 xserver-xorg-video-vesa (1:2.3.2-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Bump Standards-Version to 3.9.3 (no changes needed).
 
  -- Maarten Lankhorst <maarten.lankhorst@canonical.com>  Thu, 19 Jul 2012 09:44:43 +0200
 

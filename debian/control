@@ -16,7 +16,7 @@ Build-Depends:
  xutils-dev (>= 1:7.5+4),
  quilt,
  libpciaccess-dev (>= 0.12.901),
-Standards-Version: 3.9.1
+Standards-Version: 3.9.3
 Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-vesa
 Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-vesa.git
 
