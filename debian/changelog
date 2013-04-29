@@ -1,3 +1,11 @@
+xserver-xorg-video-vesa (1:2.3.2-1~bpo70+1) wheezy-backports; urgency=low
+
+  * Rebuild for wheezy-backports.
+  * Fix build with xserver-xorg-dev-1.14 and mibstore.h
+  * Upload to wheezy-graphics-next
+
+ -- Alexey Bondarchuk <alexey.bondarchuk@aleax.me>  Mon, 29 Apr 2013 16:30:02 +0300
+
 xserver-xorg-video-vesa (1:2.3.2-1) UNRELEASED; urgency=low
 
   * New upstream release.
